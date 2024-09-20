@@ -1,1 +1,1 @@
-web: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn analitica.wsgi:application --bind 0.0.0.0:$PORT
+web: python manage.py migrate && python manage.py collectstatic --noinput && python manage.py create_superuser --per_documento=1234567890 --per_nombres=Admin --email=estadisticasenacomercio@gmail.com --password=estadistica12345  && gunicorn analitica.wsgi:application --bind 0.0.0.0:$PORT
