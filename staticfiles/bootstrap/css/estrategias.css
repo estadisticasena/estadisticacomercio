@@ -1,0 +1,56 @@
+
+
+
+.chart {
+    padding: 2rem; /* Reduce padding */
+    border: 1px solid #ffffff;
+    border-radius: 1rem; /* Reduce border radius */
+    background: #faf1f139;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.8); /* Reduce shadow size */
+    width: 300px;
+}
+
+
+.meta {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+.cuadro {
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+}
+.verde {
+    background-color: green;
+}
+.amarilla {
+    background-color: yellow;
+}
+.naranja {
+    background-color: orange;
+}
+.roja {
+    background-color: red;
+}
+
+.meta-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    white-space: nowrap;
+
+}
+
+.top-adjust {
+    margin-top: -15px; /* Ajusta este valor según sea necesario */
+}
+
+.estrategias{
+    margin-top: 50px;
+}
+.filtros{
+    margin-left: -30px;
+   
+}

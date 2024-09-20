@@ -1,0 +1,129 @@
+
+.left {
+
+    border: 1px solid #000;
+    padding: 20px;
+    float: left;
+    background-color: #ffffff;
+    border-radius: 0 0 20px 20px ;
+}
+.card{
+    width: 380px;
+    border-radius: 100px;
+   
+    float: left;
+    background-color: #ffffff;
+    border-radius: 20px;
+}
+
+label {
+    display: inline-block;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 5px;
+    outline: none;
+    background-color: #ffffff;
+}
+.titulo {
+    background-color: #274f3b;
+    border-radius: 20px 20px 0 0;
+
+}
+
+
+.titulo h1{
+   color: #fff;
+   font-size: 20px;
+   padding: 9px;
+}
+.dato{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.dato .serie {
+    width: 500%;
+    margin-right: 15px;
+}
+
+.serie, .valor{
+    display: inline-block;
+}
+
+.dato .valor {
+    width: 40%;
+}
+.datos{
+    padding-bottom: 30px;
+}
+.resultado{
+
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #b6b9bb; /* Light background for the total container */
+    border: 1px solid #dee2e6; /* Border color */
+    border-radius: 9px; /* Rounded corners */
+    padding: 3px 15px; /* Padding inside the container */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Font weight */
+
+
+}
+
+.valor_total{
+    font-size: 14px;
+    padding: 4px;
+}
+.agregar {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    background-color: #18936f;
+    border: none;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 20px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.crear-grafico {
+    float: right;
+    background-color: #18936f;
+    border: none;
+    padding: 10px;
+    color: #fff;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.right {
+    float: left;
+    border: 1px solid #000;
+    max-width: 605px;
+    margin-left: 15px;
+}
+
+.card .datos {
+    display: flex;
+    flex-direction: column;
+}
+
+.card .dato {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.card .dato .serie {
+    text-align: left;
+}
+
+.card .dato .valor {
+    text-align: right;
+}

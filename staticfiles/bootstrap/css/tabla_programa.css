@@ -1,0 +1,169 @@
+.custom-table {
+    width: 80%; 
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    border-collapse: separate; 
+    border-spacing: 0;
+    margin-top: 40px; 
+    background-color: #ffffff;
+  }
+
+
+  .custom-table th,
+  .custom-table td {
+    border: 1px solid #ffffff; 
+    padding: 10px; 
+    text-align: center; 
+  }
+
+  .custom-table .custom-thead {
+    background-color: #274f3b;/* Cambia este valor al color de fondo deseado */
+    color: #ffffff; /* Color del texto del encabezado */
+  }
+
+ 
+  .custom-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+
+  .custom-table tbody tr:hover {
+    background-color: #f7f9fb; 
+  }
+  .map-container {
+   margin-left: 15%;
+  }
+  .custom-scroll-table tbody {
+    display: block;
+    max-height: 322px; 
+    overflow-y: auto;
+  }
+  
+  .custom-scroll-table thead,
+  .custom-scroll-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  #ventanaEmergente {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 1050; /* Ajustado para mayor prioridad */
+}
+
+/* Estilos para el modal */
+#ventanaEmergente {
+  display: none; /* Ocultar inicialmente el modal */
+  position: fixed;
+  z-index: 1000; /* Asegura que el modal esté por encima del resto del contenido */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+}
+
+#formularioEmergente {
+  background-color: #ffffff;
+  margin: 10% auto; /* Centrar el modal vertical y horizontalmente */
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px; /* Ancho máximo del modal */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra alrededor del modal */
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.btn-icon img {
+  display: block; /* Asegura que la imagen se muestre correctamente */
+}
+/* Estilos para el modal */
+#ventanaEmergente {
+  display: none; /* Para ocultar inicialmente el modal */
+  position: fixed;
+  z-index: 1050;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+}
+
+#formularioEmergente {
+  position: relative;
+  margin: auto;
+  margin-top: 10%;
+  max-width: 600px;
+}
+
+.modal-content {
+  background-color: #ffffff; /* Fondo blanco del modal */
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); 
+
+
+ 
+}
+
+.modal-header {
+  background-color: #274f3b;
+  padding-bottom: 0; 
+  color: #ffffff;
+}
+.modal-title{
+  
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+}
+.btn-danger{
+  margin-left: auto;
+  margin-right: auto;
+}
+.modal-title {
+  margin-bottom: 0; /* Sin margen inferior en el título */
+}
+
+.modal-body {
+  padding: 20px; /* Relleno interno */
+}
+
+
+.custom-table{
+  border: 1px solid #dee2e6;
+}
+
+
+/* Estilo para el contenedor de la tabla */
+
+/* Estilo para la tabla */
+.custom-table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.pagination-wrapper {
+  display: flex; /* Usar flexbox para centrar */
+  justify-content: center; /* Centra horizontalmente el contenido */
+  margin-top: 1rem; /* Espacio entre la tabla y la paginación */
+}
