@@ -47,6 +47,8 @@ INSTALLED_APPS = [
    
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://analitica-production.up.railway.app']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
