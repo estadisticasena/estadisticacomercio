@@ -87,28 +87,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'analitica',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST':'localhost',
-        'PORT': '3306',
-    }
-}
-
-
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': os.environ.get('DB_NAME', 'railway'),
-#        'USER': os.environ.get('DB_USER', 'root'),
-#        'PASSWORD': os.environ.get('DB_PASSWORD', 'NKYzxmCoIKgPHWUSyUeEXVRqoEnnDPiN'),
-#        'HOST': os.environ.get('DB_HOST', 'mysql.railway.internal'),
-#        'PORT': os.environ.get('DB_PORT', '3306'),
+#        'NAME': 'analitica',
+#        'USER': 'root',
+#        'PASSWORD': '',
+#        'HOST':'localhost',
+#        'PORT': '3306',
 #    }
 #}
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME', 'railway'),
+        'USER': os.environ.get('DB_USER', 'root'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'NKYzxmCoIKgPHWUSyUeEXVRqoEnnDPiN'),
+        'HOST': os.environ.get('DB_HOST', 'mysql.railway.internal'),
+        'PORT': os.environ.get('DB_PORT', '3306'),
+    }
+}
 
 
 
