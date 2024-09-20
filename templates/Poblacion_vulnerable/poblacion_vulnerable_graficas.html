@@ -1,0 +1,253 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+{%load static%}
+<link rel="stylesheet" href="{% static 'bootstrap/css/general.css' %}">
+
+<div class="main p-3">
+    <div class="text-center">
+        <div class="container">
+            <h1 class="h1 mb-4">Poblacion vulnerable</h1>
+
+            <div class="row align-items-center">
+                
+                <input type="hidden" id="id_chart" value="chart1">
+                <input type="hidden" id="id_table" value="resultados_tabla">
+                
+                <div class="col-md-6 mb-3 d-flex prueba">
+                    <!-- Cuadros de colores -->
+                    <div class="meta">
+                        60-100%
+                        <div class="cuadro verde"></div>
+                    </div>
+                    <div class="meta">
+                        50-59%
+                        <div class="cuadro amarilla"></div>
+                    </div>
+                    <div class="meta">
+                        30-49%
+                        <div class="cuadro naranja"></div>
+                    </div>
+                    <div class="meta">
+                        0-29%
+                        <div class="cuadro roja"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container my-4">
+                <div class="btn-group mb-3" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary" onclick="showChart('chart1','resultados_tabla')">Poblacion</button>
+                    <button type="button" class="btn btn-secondary"  onclick="showChart('chart2','resultados_tabla2')" >Tipo de poblaciones</button>
+                </div>
+
+                <div id="chart1" class="chart">
+                    <canvas id="poblaciones"></canvas>
+                </div>
+
+                <div id="chart2" class="chart" style="display: none;">
+                    <canvas id="tipo_poblacion"></canvas>
+                </div>
+            </div>
+
+            <div class="container">
+                <div style="max-height: 400px; overflow-x: auto; overflow-y: auto;">
+                    <table class="table table-striped table-hover data-table" id="resultados_tabla">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col" style="min-width: 200px;" class="fixed-header"></th>
+                              
+                                <th scope="col" style="min-width: 200px;" class="fixed-header">Desplazados por la violencia</th>
+                                <th scope="col" style="min-width: 200px;" class="fixed-header">Hechos Victimizantes</th>
+                                <th scope="col" style="min-width: 100px;" class="fixed-header">Victimas (*)</th>
+                                <th scope="col" style="min-width: 100px;" class="fixed-header">Otras Poblaciones Vulnerables</th>
+                                <th scope="col" style="min-width: 100px;" class="fixed-header">Total Poblaciones Vulnerables </th>
+                     
+
+                             
+                                
+    
+                            </tr>
+                        </thead>
+                      
+                        <tbody id="resultados">
+                          
+                            
+                            <tr>
+                                <td class="fixed-column">Meta Cupos</td>
+                                {%for meta_poblacion_aprendices in poblacion_cupos%}
+                                <td>{{meta_poblacion_aprendices.meta_2024_poblaciones}}</td>
+                               
+                           
+                            
+                               
+                                {%endfor%}
+
+                
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Meta Aprendices</td>
+                                {%for meta_poblacion_cupos in poblacion_aprendices%}
+                                <td>{{meta_poblacion_cupos.meta_2024_poblaciones}}</td>
+                               
+                           
+                            
+                               
+                                {%endfor%}
+
+                
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Porcentaje cupos</td>
+                                {%for ejecucion_cupos in poblacion_cupos%}
+                                <td>{{ejecucion_cupos.ejecucion_poblaciones}}</td>
+                           
+                          
+                                {%endfor%}
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Porcentaje aprendices</td>
+                                {%for ejecucion_aprendices in poblacion_aprendices%}
+                                <td>{{ejecucion_aprendices.ejecucion_poblaciones|floatformat:0}}</td>
+                          
+                          
+                                {%endfor%}
+                            </tr>
+                            
+                            
+                            <tr>
+                                <td class="fixed-column">Porcentaje en ejecucion cupos</td>
+                                {%for porcentaje_cupos in conversiones_de_porcentajes_cupos%}
+                                <td>{{porcentaje_cupos|floatformat:2}}%</td>
+                            
+                          
+                                {%endfor%}
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Porcentaje en ejecucion aprendices</td>
+                                {%for porcentaje_aprendices in conversiones_de_porcentajes_aprendices%}
+                                <td>{{porcentaje_aprendices|floatformat:2}}%</td>
+                          
+                          
+                                {%endfor%}
+                            </tr>
+                          
+                        </tbody>
+                    </table>
+                    
+                </div>
+             </div>
+             <div class="container">
+                <div style="max-height: 400px; overflow-x: auto; overflow-y: auto;">
+                    <table class="table table-striped table-hover data-table" id="resultados_tabla2"style="display: none;" >
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col" style="min-width: 200px;" class="fixed-header"></th>
+                              
+        
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Indígenas</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">INPEC</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Jóvenes Vulnerables</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Adolescente en Conflicto con la Ley Penal</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Mujer Cabeza de Hogar</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Persona con Discapacidad</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Negritudes (Negros)</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Afrocolombianos</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Raizales</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Palenqueros</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">NARP</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Proceso de Reintegración y Adolescentes desvinculados...</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Tercera Edad </th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Adolescente Trabajador </th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Rroom </th>  
+                             
+                                
+    
+                            </tr>
+                        </thead>
+                      
+                        <tbody id="resultados">
+                            <tr>
+                                <td class="fixed-column">Meta Cupos</td>
+                              
+        
+                                {%for tipo_poblaciones_cupos in tipo_poblacion_cupos%}
+                                <td>{{tipo_poblaciones_cupos.meta_2024}}</td>
+                               
+                                {%endfor%}
+                               
+                            
+                             
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Meta Aprendices</td>
+                             
+                                {%for tipo_poblaciones_aprendices in tipo_poblacion_aprendices%}
+                                <td>{{tipo_poblaciones_aprendices.meta_2024}}</td>
+                               
+                                {%endfor%}
+
+                            </tr>
+                    
+                            <tr>
+                                <td class="fixed-column">Porcentaje cupos</td>
+                                {%for ejecucion_cupos in tipo_poblacion_cupos%}
+                                <td>{{ejecucion_cupos.ejecucion}}</td>
+                           
+                          
+                                {%endfor%}
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Porcentaje aprendices</td>
+                                {%for ejecucion_aprendices in tipo_poblacion_aprendices%}
+                                <td>{{ejecucion_aprendices.ejecucion}}</td>
+                          
+                          
+                                {%endfor%}
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Porcentaje en ejecucion cupos</td>
+                                {%for porcentaje_cupos in conversiones_de_porcentajes_cupos_tipo_poblacion%}
+                                <td>{{porcentaje_cupos|floatformat:2}}%</td>
+                            
+                          
+                                {%endfor%}
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Porcentaje en ejecucion aprendices</td>
+                                {%for porcentaje_aprendices in conversiones_de_porcentajes_aprendices_tipo_poblacion%}
+                                <td>{{porcentaje_aprendices|floatformat:2}}%</td>
+                          
+                          
+                                {%endfor%}
+                            </tr>
+                          
+                        </tbody>
+                    </table>
+                    
+                </div>
+             </div>
+             
+    </div>
+</div>
+
+<script id="datos_grafica" type="application/json">
+    {{datos_grafica|safe}}
+</script>
+<script id="meta_grafica" type="application/json">
+    {{meta_grafica|safe}}
+</script>
+
+     <!-- grafica tipo de poblaciones -->
+<script id="data_tipo_poblaciones" type="application/json">
+    {{data_tipo_poblaciones|safe}}
+</script>
+<script id="meta_tipo_poblaciones" type="application/json">
+    {{meta_tipo_poblaciones|safe}}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'bootstrap/js/poblacion_vulnerables.js' %}"></script>
+
+
+{% endblock contenido %}

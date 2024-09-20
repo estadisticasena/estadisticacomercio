@@ -1,0 +1,354 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'bootstrap/css/estrategias.css' %}">
+
+<div class="main p-3">
+    <div class="text-center">
+        
+         <div class="container">
+            {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == 'success' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+            <h1 class="h1 mb-4">Estrategias</h1>
+           
+            <!-- Filtros de Fecha y Estrategia -->
+            <div class="container mt-1 filtros">
+                <div class="row align-items-center">
+                    <!-- Fecha Inicio -->
+                    <div class="col-md-4 mb-2">
+                        <div class="form-group row">
+                            <label for="filtroFechaInicio" class="col-sm-5 col-form-label col-form-label-sm">Fecha Inicio:</label>
+                            <div class="col-sm-7">
+                                <input type="date" class="form-control form-control-sm" id="fecha_inicio" name="fecha_inicio" value="{{ request.GET.fecha_inicio }}" onchange="aplicarFiltrosEstrategias()">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fecha Fin -->
+                    <div class="col-md-4 mb-2">
+                        <div class="form-group row">
+                            <label for="filtroFechaFin" class="col-sm-5 col-form-label col-form-label-sm">Fecha Fin:</label>
+                            <div class="col-sm-7">
+                                <input type="date" class="form-control form-control-sm" id="fecha_fin" name="fecha_fin" onchange="aplicarFiltrosEstrategias()" value="{{ request.GET.fecha_fin }}">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Estrategia -->
+                    <div class="col-md-4 mb-2">
+                        <div class="form-group row">
+                            <label for="filtroSeleccion" class="col-sm-5 col-form-label col-form-label-sm">Estrategia:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control form-control-sm custom-select" name="estrategia" id="estrategia" onchange="aplicarFiltrosEstrategias()">
+                                    <option value="{{ estrategia.est_id }}" disabled {% if not select_estrategia %}selected{% endif %}>Seleccione una estrategia</option>
+                                    {% for estrategia in estrategias %}
+                                        <option value="{{ estrategia.est_id }}"{%if not select_estrategia and forloop.first %}selected{% elif estrategia.est_id|stringformat:"s" == select_estrategia %}selected{% endif %}>{{ estrategia.est_nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Porcentajes -->
+            <div class="container mt-1">
+                <div class="row align-items-center">
+                    <div class="col-md-3 mb-2 top-adjust "> <!-- Espacio para metas visuales -->
+                        <div class="meta-container">
+                            <div class="meta">
+                                60-100%
+                                <div class="cuadro verde"></div>
+                            </div>
+                            <div class="meta">
+                                50-59%
+                                <div class="cuadro amarilla"></div>
+                            </div>
+                            <div class="meta">
+                                30-49%
+                                <div class="cuadro naranja"></div>
+                            </div>
+                            <div class="meta">
+                                0-29%
+                                <div class="cuadro roja"></div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+       
+    <div class="container text-center ">
+        <div class="row row-cols-3 row-cols-lg-3  ">
+            <div class="col p-1">
+               
+                <div class="chart">
+                        <canvas id="auxiliar" width="300" height="300"></canvas>
+                    </div>
+           
+            </div>
+            <div class="col p-1">
+               
+                   <div class="chart">
+                        <canvas id="tecnico" width="300" height="300"></canvas>
+                    </div>
+                </div>
+          
+            <div class="col p-1 ">
+               
+                    <div class="chart">
+                        <canvas id="tecnologo" width="300" height="300"></canvas>
+                    </div>
+            
+            </div>
+       
+            <div class="col p-1 ">
+              
+                <div class="chart">
+                        <canvas id="profundizacion_tecnica" width="300" height="300"></canvas>
+                    </div>
+         
+            </div>
+            <div class="col p-1">
+                <div class="chart">
+              
+                        <canvas id="evento" width="300" height="300"></canvas>
+                    </div>
+               
+            </div>
+            <div class="col p-1">
+              
+                <div class="chart">
+                        <canvas id="operario" width="300" height="300"></canvas>
+                    </div>
+           
+            </div>
+     
+       
+            <div class="col p-1">
+                <div class="chart">
+                   
+                        <canvas id="curso_especial" width="300" height="300"></canvas>
+                    </div>
+         
+            </div>
+            <div class="col p-1">
+                <div class="chart">
+                <canvas id="bilinguismo" width="300" height="300"></canvas>
+            </div>
+            </div>
+            <div class="col p-1">
+                <div class="chart">
+                <canvas id="sin_bilinguismo" width="300" height="300"></canvas>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div style="max-height: 400px; overflow-x: auto; overflow-y: auto;">
+            <table class="table table-striped table-hover data-table" id="resultados_tabla">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" style="min-width: 200px;" class="fixed-header"></th>
+                      
+                        <th scope="col" style="min-width: 200px;" class="fixed-header">Auxiliar</th>
+                        <th scope="col" style="min-width: 200px;" class="fixed-header">Técnico</th>
+                        <th scope="col" style="min-width: 100px;" class="fixed-header">Tecnólogo</th>
+                        <th scope="col" style="min-width: 100px;" class="fixed-header">Profundización Técnica</th>
+                        <th scope="col" style="min-width: 100px;" class="fixed-header">Evento</th>
+                        <th scope="col" style="min-width: 150px;" class="fixed-header">Operario</th>
+                        <th scope="col" style="min-width: 150px;" class="fixed-header">Curso Especial</th>
+                        <th scope="col" style="min-width: 150px;" class="fixed-header">Bilingüismo</th>
+                        <th scope="col" style="min-width: 150px;" class="fixed-header">Sin Bilingüismo</th>
+             
+
+                     
+                        
+
+                    </tr>
+                </thead>
+              
+                <tbody id="resultados">
+                    <tr>
+                        <td class="fixed-column">Modalidad presencial</td>
+                    
+                         {%for data_presencial in data_presencial_p04_tabla%}
+                        <td>{{data_presencial}}</td>
+                       
+                        {%endfor%}
+                    </tr>
+                    <tr>
+                        <td class="fixed-column">Modalidad virtual</td>
+                 
+                        {%for data_virtual in data_virtual_p04_tabla%}
+                        <td>{{data_virtual}}</td>
+                       
+                        {%endfor%}
+                    </tr>
+                    <tr>
+                        <td class="fixed-column">Meta Presencial</td>
+                        {%for metas_presencial in presencial_meta%}
+                        <td>{{metas_presencial.estd_auxiliar_meta}}</td>
+                        <td>{{metas_presencial.estd_tecnico_meta}}</td>
+                        <td>{{metas_presencial.estd_tecnologo}}</td>
+                        <td>{{metas_presencial.estd_profundizacion_tecnica_meta}}</td>
+                        <td>{{metas_presencial.estd_evento}}</td>
+                        <td>{{metas_presencial.estd_operario_meta}}</td>
+                        <td>{{metas_presencial.estd_curso_especial}}</td>
+                        <td>{{metas_presencial.estd_bilinguismo}}</td>
+                        <td>{{metas_presencial.estd_sin_bilinguismo}}</td>
+                
+                       
+                        {%endfor%}
+
+        
+                    </tr>
+                    <tr>
+                        <td class="fixed-column">Meta Virtual</td>
+                        {%for metas_virtual in virtual_meta_estrategia%}
+                        <td>{{metas_virtual.estd_auxiliar_meta}}</td>
+                        <td>{{metas_virtual.estd_tecnico_meta}}</td>
+                        <td>{{metas_virtual.estd_tecnologo}}</td>
+                        <td>{{metas_virtual.estd_profundizacion_tecnica_meta}}</td>
+                        <td>{{metas_virtual.estd_evento}}</td>
+                        <td>{{metas_virtual.estd_operario_meta}}</td>
+                        <td>{{metas_virtual.estd_curso_especial}}</td>
+                        <td>{{metas_virtual.estd_bilinguismo}}</td>
+                        <td>{{metas_virtual.estd_sin_bilinguismo}}</td>
+                  
+                        {%endfor%}
+                    </tr>
+                  
+                </tbody>
+            </table>
+            
+        </div>
+     </div>
+    <script id="total_curso_especial_activos" type="application/json">
+        {{total_curso_especial_activos|safe}}
+    </script>
+    <script id="total_tecnologo_activos" type="application/json">
+        {{total_tecnologo_activos|safe}}
+    </script>
+    <script id="total_tecnico_activos" type="application/json">
+        {{total_tecnico_activos|safe}}
+    </script>
+    <script id="total_auxiliar_activos" type="application/json">
+        {{total_auxiliar_activos|safe}}
+    </script>
+    <script id="total_operario_activos" type="application/json">
+        {{total_operario_activos|safe}}
+    </script>
+    <script id="total_evento_activos" type="application/json">
+        {{total_evento_activos|safe}}
+    </script>
+    <script id="total_profundizacion_tecnica_activos" type="application/json">
+        {{total_profundizacion_tecnica_activos|safe}}
+    </script>
+    <script id="total_bilinguismo_activos" type="application/json">
+        {{total_bilinguismo_activos|safe}}
+    </script>
+    <script id="total_sin_bilinguismo_activos" type="application/json">
+        {{total_sin_bilinguismo_activos|safe}}
+    </script>
+   <!--METAS DE ESTRATEGIAS -->
+    <script id="auxiliar_meta" type="application/json">
+        {{auxiliar_meta|safe}}
+    </script>
+    <script id="tecnico_meta" type="application/json">
+        {{tecnico_meta|safe}}
+    </script>
+    <script id="tecnologo_meta" type="application/json">
+        {{tecnologo_meta|safe}}
+    </script>
+    <script id="profundizacion_tecnica_meta" type="application/json">
+        {{profundizacion_tecnica_meta|safe}}
+    </script>
+    <script id="evento_meta" type="application/json">
+        {{evento_meta|safe}}
+    </script>
+    <script id="operario_meta" type="application/json">
+        {{operario_meta|safe}}
+    </script>
+    <script id="curso_especial_meta" type="application/json">
+        {{curso_especial_meta|safe}}
+    </script>
+    <script id="bilinguismo_meta" type="application/json">
+        {{bilinguismo_meta|safe}}
+    </script>
+    <script id="sin_bilinguismo_meta" type="application/json">
+        {{sin_bilinguismo_meta|safe}}
+    </script>
+
+   
+
+    <script>
+        let filtro_url = "{% url 'cores:estrategias_index' %}?";
+        function aplicarFiltrosEstrategias() {
+            const estrategia = document.getElementById('estrategia').value;
+            const fecha_fin = document.getElementById('fecha_fin').value;
+            const fecha_inicio = document.getElementById('fecha_inicio').value;
+           
+            console.log('jdj',estrategia)
+            let url = filtro_url;
+            if (estrategia) {
+                url += `estrategia=${estrategia}&`;
+            }
+            if (fecha_fin) {
+                url += `fecha_fin=${fecha_fin}&`;
+            }
+            if (fecha_inicio) {
+                url += `fecha_inicio=${fecha_inicio}`;
+            }
+            
+            window.location.href = url;
+          }
+          function Estado_de_color(value, max){
+            const porcentaje = value / max;
+            if(porcentaje <0.29) return 'rgba(255, 99, 132, 0.2)';
+            if(porcentaje <0.49) return 'rgba(255, 159, 64, 0.2)';
+            if(porcentaje <0.59) return 'rgba(255, 206, 86, 0.2)';
+            return 'rgba(75, 192, 192, 0.2)';
+        }
+
+
+
+  
+    </script>
+    </div>
+   
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'bootstrap/js/auxiliar.js' %}"></script>
+    <script src="{% static 'bootstrap/js/curso_especial.js' %}"></script>
+    <script src="{% static 'bootstrap/js/evento.js' %}"></script>
+    <script src="{% static 'bootstrap/js/operario.js' %}"></script>
+    <script src="{% static 'bootstrap/js/profundizacion_tecnica.js' %}"></script>
+    <script src="{% static 'bootstrap/js/tecnico.js' %}"></script>
+    <script src="{% static 'bootstrap/js/tecnologo.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bilinguismo.js' %}"></script>
+    <script src="{% static 'bootstrap/js/sin_bilinguismo.js' %}"></script>
+    <script src="{% static 'bootstrap/js/estrategias.js' %}"></script>
+</div>
+</div>
+</div>
+{% endblock contenido %}

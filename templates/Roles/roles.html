@@ -1,0 +1,177 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'bootstrap/css/administrador.css' %}">
+<div class="main p-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="text-center">
+                    <h1 class="h1 mb-4">Listado de Roles</h1>
+                </div>
+                <div class="mt-4">
+
+                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#crearModal">Agregar</button>
+
+                    
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for rol in  roles%}
+                            <tr>
+                                
+                      
+                                <th scope="row">{{rol.rol_id}}</th>
+                                <td>{{rol.rol_nombre}}</td>
+                                <td>{{rol.rol_descripcion}}</td>
+                              
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{rol.rol_id}}" data-nombre="{{rol.rol_nombre}}" data-descripcion="{{rol.rol_descripcion}}"onclick="Editar_rol(this)">Editar</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  data-id="{{rol.rol_id}}" onclick="Delete_rol(this)">Eliminar</button>
+                                </td>
+                            </tr>
+                            {%endfor%}
+                            
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  
+
+    <!-- Contenedor para los modales -->
+    <div class="modal-container">
+        <div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="crearModalLabel">Crear modalidad</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                
+                        <form  action="{% url 'personas:roles_create' %}" method="post">
+                            <div class="form-group">
+                                {% csrf_token %}
+                                {{ form_roles.as_p }}
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true"data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarModalLabel">Editar Rol</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                
+                        <form id="editarForm" method="post">
+                            <div class="form-group">
+                                {% csrf_token %}
+                                <label for="rol_nombre">Nombre:</label>
+                                <input type="text" id="rol_nombre" name="rol_nombre" class="form-control" />
+                                <label for="rol_descripcion">Nombre:</label>
+                                <input type="text" id="rol_descripcion" name="rol_descripcion" class="form-control" />
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true"data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eliminarModalLabel">Eliminar Usuario</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que quieres eliminar este usuario?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deleteForm" method="post">
+                            {% csrf_token%}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-container {
+    position: relative;
+    margin: auto;
+    margin-top: 10%;
+    max-width: 600px;
+}
+.modal-container .modal {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 600px;
+    z-index: 1050;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+</style>
+<script>
+    function Delete_rol(button) {
+        const pk = button.getAttribute('data-id');
+        document.getElementById('deleteForm').action = `/roles/delete/${pk}`;
+    }
+    function Editar_rol(button){
+        const pk = button.getAttribute('data-id');
+        const rol = button.getAttribute('data-nombre')
+        const rol_description = button.getAttribute('data-descripcion')
+  
+        document.getElementById('editarForm').action = `/roles/edit/${pk}`;
+        document.getElementById('rol_nombre').value = rol
+        document.getElementById('rol_descripcion').value = rol_description
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock contenido %}

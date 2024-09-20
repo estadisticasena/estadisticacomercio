@@ -1,0 +1,204 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'bootstrap/css/administrador.css' %}">
+<div class="main p-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="text-center">
+                    <h1 class="h1 mb-4">Listado de Programas de bilinguismo</h1>
+                </div>
+                <div class="mt-4">
+
+                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#crearModal">Agregar</button>
+
+                    
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                             
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Version</th>
+                                <th scope="col">Modalidad</th>
+                                <th scope="col">Programa</th>
+                                <th scope="col">Duración</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for bilinguismos in  bilinguismo%}
+                            <tr>
+                                
+                          
+                                <th>{{bilinguismos.bil_codigo}}</th>
+                                <td>{{bilinguismos.bil_version}}</td>
+                                <td>{{bilinguismos.bil_modalidad}}</td>
+                                <td>{{bilinguismos.Bil_programa}}</td>
+                                <td>{{bilinguismos.bil_duracion}}</td>
+                    
+                                
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{bilinguismos.bil_codigo}}" data-version="{{bilinguismos.bil_version}}" data-modalidad="{{bilinguismos.bil_modalidad.id}}"data-programa="{{bilinguismos.Bil_programa}}" data-duracion="{{bilinguismos.bil_duracion}}" onclick="Editar_bilinguismo(this)">Editar</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  data-id="{{bilinguismos.bil_codigo}}" onclick="Delete_bilinguismo(this)">Eliminar</button>
+                                </td>
+                            </tr>
+                            {%endfor%}
+                            
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  
+    <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true"data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarModalLabel">Editar Bilinguismo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+            
+                    <form id="editarForm" method="post">
+                        <div class="form-group">
+                            {% csrf_token %}
+                         
+                       
+                            <div class="mb-3">
+                                <label for="" class="form-label">Version</label>
+                                {{ form_bilinguismo.bil_version}}
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Modalidad</label>
+                                {{ form_bilinguismo.bil_modalidad}}
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Programa</label>
+                                {{ form_bilinguismo.Bil_programa}}
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Duracion</label>
+                                {{ form_bilinguismo.bil_duracion}}
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor para los modales -->
+    <div class="modal-container">
+        <div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="crearModalLabel">Crear modalidad</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                
+                        <form  action="{% url 'cores:bilinguismo_create' %}" method="post">
+                            <div class="form-group">
+                                {% csrf_token %}
+                                {{ form_bilinguismo.as_p }}
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true"data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eliminarModalLabel">Eliminar el programa de bilinguismo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que quieres eliminar este programa?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deleteForm" method="post">
+                            {% csrf_token%}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-container {
+    position: relative;
+    margin: auto;
+    margin-top: 10%;
+    max-width: 600px;
+}
+.modal-container .modal {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 600px;
+    z-index: 1050;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+</style>
+<script>
+    function Delete_bilinguismo(button) {
+        const pk = button.getAttribute('data-id');
+        document.getElementById('deleteForm').action = `/bilinguismo/delete/${pk}`;
+    }
+
+ 
+    function Editar_bilinguismo(button){
+        const pk = button.getAttribute('data-id');
+        const bil_version = button.getAttribute('data-version')
+        const bil_modalidad = button.getAttribute('data-modalidad')
+        const Bil_programa = button.getAttribute('data-programa')
+        const bil_duracion = button.getAttribute('data-duracion')
+       console.log(bil_duracion)
+        document.getElementById('editarForm').action = `/bilinguismo/edit/${pk}`;
+        document.getElementById('id_bil_version').value = bil_version
+        document.getElementById('id_bil_modalidad').value = bil_modalidad
+        document.getElementById('id_Bil_programa').value = Bil_programa
+        document.getElementById('id_bil_duracion').value = bil_duracion
+       
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock contenido %}

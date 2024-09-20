@@ -1,0 +1,328 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+
+{%load static%}
+<link rel="stylesheet" href="{% static 'bootstrap/css/tabla_programa.css'%}">
+
+   
+<div class="main p-3">
+    <div class="text-center">
+        <div class="container">
+            <div class="mapadiv">
+                <h1 class="h1 mb-4">Programa</h1>
+                
+             
+                <div class="row justify-content-center">
+                    <div class="col-md-4 mb-3">
+                        <div class="form-group row">
+                            <label for="filtroSeleccion2" class="col-sm-4 col-form-label col-form-label-sm text-md-right">Centro de formacion:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm custom-select" id="centro_de_formacion" onchange="aplicarFiltros()" required>
+
+                                    <option value="{{selected_centro_de_formacion}}"  {% if not selected_centro_de_formacion %}selected{% endif %}>Selecciona centro de formacion</option>
+                                    {% for choice in centro_de_formacion%}
+                                        <option value="{{ choice.id }}" {% if choice.id|stringformat:"s" == selected_centro_de_formacion %}selected{% endif %}>{{ choice.centro_de_formacion|title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-group row">
+                            <label for="filtroSeleccion1" class="col-sm-5 col-form-label col-form-label-sm text-md-right">Tipo de formación:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control form-control-sm custom-select" id="nivel_formacion" onchange="aplicarFiltros()">
+                                    <option value="{{selected_nivel_formacion}}" disabled {% if not selected_nivel_formacion %}selected{% endif %}>Selecciona Nivel de Formación</option>
+                                    {% for choice in nivel_formacion %}
+                                        <option value="{{ choice.id }}" {% if choice.id|stringformat:"s" == selected_nivel_formacion %}selected{% endif %}>{{ choice.nivel_formacion|title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <div class="form-group row">
+                            <label for="filtroSeleccion2" class="col-sm-4 col-form-label col-form-label-sm text-md-right">Programa:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm custom-select" name='programa_formacion' id="programa_formacion" onchange="aplicarFiltros()">
+                                    <option value="" >Selecciona programa</option>
+                                    
+                                    {% for choice in programa_formacion %}
+                                        <option value="{{ choice }}" {% if choice == selected_programa_formacion %}selected{% endif %}>{{ choice|title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+   
+                    
+                    <div class="col-md-4 mb-3"> <!-- Ajustado el ancho de la columna para Modalidad -->
+                        <div class="form-group row">
+                            <label for="filtroSeleccion3" class="col-sm-4 col-form-label col-form-label-sm text-md-right">Modalidad:</label>
+                            <div class="col-sm-8">
+                                       
+                                <select class="form-control form-control-sm custom-select" id="modalidad" name="modalidad"onchange="aplicarFiltros()">
+
+                                   
+                                    <option value="" {% if not selected_modalidad %}selected{% endif %}>Selecciona modalidad</option>
+                                    {% for choice in modalidad %}
+                                    {% for modalidad_seleccionada in selected_modalidad %}
+                                    <option value="{{ choice.id }}" {% if choice.id == modalidad_seleccionada.id %}selected{% endif %}>{{ choice.modalidad }}</option>
+                                    {% endfor %}
+                                    {% endfor %}
+                      
+                                
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+
+         
+  
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 mb-4">
+                <!-- Tabla 1 -->
+                <div class="custom-scroll-table">
+                    <div class="table-container">
+                        <table class="table-hover custom-table">
+                            <thead class="custom-thead">
+                                <tr>
+                                    <th scope="col">Municipios</th>
+                                    <th scope="col">Conteo de Programas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for municipio in lista_municipios %}
+                                   <tr>
+                                      <td>{{ municipio.nombre_municipio_curso }}</td>
+                                      <td>{{ municipio.programa_count }}</td>
+                                   </tr>
+                                {% empty %}
+                                    <tr>
+                                      <td colspan="2">No hay Municipios disponibles</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Contenedor para la paginación -->
+                    <div class="pagination-wrapper">
+                        <nav aria-label="Paginación de Municipios">
+                            <ul class="pagination">
+                                {% if lista_municipios.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page1=1" aria-label="Primero">
+                                            <span aria-hidden="true">&laquo;&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page1={{ lista_municipios.previous_page_number }}&centro_de_formacion={{selected_centro_de_formacion}}&nivel_formacion={{selected_nivel_formacion}}" aria-label="Anterior">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Página {{ lista_municipios.number }} de {{ lista_municipios.paginator.num_pages }}</span>
+                                </li>
+                                {% if lista_municipios.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page1={{ lista_municipios.next_page_number }}&centro_de_formacion={{selected_centro_de_formacion}}&nivel_formacion={{selected_nivel_formacion}}" aria-label="Siguiente">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page1={{ lista_municipios.paginator.num_pages }}&centro_de_formacion={{selected_centro_de_formacion}}&nivel_formacion={{selected_nivel_formacion}}" aria-label="Último">
+                                            <span aria-hidden="true">&raquo;&raquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+      
+   
+    
+    
+            <div class="col-md-5 mb-4">
+                <!-- Tabla 2 (duplicada) -->
+                <div class="custom-scroll-table">
+                    <table class=" table-hover custom-table">
+                        <thead class="custom-thead">
+                            <tr>
+                                <th scope="col">Ficha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for fichas in lista_fichas %}
+                            <tr>
+                               <td>{{ fichas.identificador_ficha }}</td>
+                               <td><button type="button" data-identificador="{{ fichas.identificador_ficha }}"  class="btn-icon mostrarFormulario"><img src="{% static 'bootstrap/img/visualizar.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;"></button></td>
+                               
+                            </tr>
+                         {% empty %}
+                             <tr>
+                               <td colspan="2">No hay Fichas disponibles</td>
+                             </tr>
+                            {% endfor %}
+                           
+                        </tbody>
+                   
+                        
+                    </table>
+                    <div class="pagination-wrapper">
+                        <nav aria-label="Paginación de Fichas">
+                            <ul class="pagination justify-content-end">
+                                {% if lista_fichas.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page2=1" aria-label="Primero">
+                                            <span aria-hidden="true">&laquo;&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page2={{ lista_fichas.previous_page_number }}&centro_de_formacion={{selected_centro_de_formacion}}&nivel_formacion={{selected_nivel_formacion}}" aria-label="Anterior">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Página {{ lista_fichas.number }} de {{ lista_fichas.paginator.num_pages }}</span>
+                                </li>
+                                {% if lista_fichas.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page2={{ lista_fichas.next_page_number }}&centro_de_formacion={{selected_centro_de_formacion}}&nivel_formacion={{selected_nivel_formacion}}" aria-label="Siguiente">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page2={{ lista_fichas.paginator.num_pages }}&centro_de_formacion={{selected_centro_de_formacion}}&nivel_formacion={{selected_nivel_formacion}}" aria-label="Último">
+                                            <span aria-hidden="true">&raquo;&raquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+        <!-- Modal -->
+       
+
+        <div  id="ventanaEmergente" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true"data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eliminarModalLabel">Ficha</h5>
+                   
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                        
+                              
+                    
+                              <p><strong>Identificador Ficha:</strong> <span id="detalleIdentificador"></span></p>
+                              
+                              <p><strong>Modalidad:</strong> <span id="detalleCampo1"></span></p>
+                              <p><strong>Centro de formacion:</strong> <span id="detalleCampo2"></span></p>
+                              <p><strong>Tipo de formacion:</strong> <span id="detalleCampo9"></span></p>
+                             
+                              <p><strong>Fecha inicio ficha:</strong> <span id="detalleCampo4"></span></p>
+                              <p><strong>Fecha fin ficha:</strong> <span id="detalleCampo5"></span></p>
+                              <p><strong>Red:</strong> <span id="detalleCampo6"></span></p>
+                              <p><strong>Municipio:</strong> <span id="detalleCampo7"></span></p>
+                              <p><strong>Programa:</strong> <span id="detalleCampo8"></span></p>
+                            </div>
+                           
+                          </form>                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger " aria-label="Close">
+                            cerrar
+                        </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+
+        </div>
+    </div>
+    </div>
+</div>
+  </div>
+</div>
+
+
+<script>
+
+
+    function aplicarFiltros() {
+        const centro_de_formacion = document.getElementById('centro_de_formacion').value;
+        const nivelFormacion = document.getElementById('nivel_formacion').value;
+        const programaFormacion = document.getElementById('programa_formacion').value;
+        const modalidad = document.getElementById('modalidad').value;
+      
+        let url = "{% url 'cores:programa' %}?";
+        if (centro_de_formacion) {
+            url += `centro_de_formacion=${centro_de_formacion}&`;
+        }
+        if (nivelFormacion) {
+            url += `nivel_formacion=${nivelFormacion}&`;
+        }
+        if (programaFormacion) {
+            url += `programa_formacion=${programaFormacion}&`;
+        }
+        if (modalidad) {
+            url += `modalidad=${modalidad}`;
+        }
+        
+        window.location.href = url;
+      }
+      document.getElementById('nivel_formacion').addEventListener('change', function() {
+        // Limpia los filtros dependientes y aplica los nuevos filtros
+        document.getElementById('programa_formacion').value = ''; // Limpia el filtro de programa
+        document.getElementById('modalidad').value = ''; // Limpia el filtro de modalidad
+        aplicarFiltros();
+    });
+    
+    document.getElementById('programa_formacion').addEventListener('change', function() {
+        // Limpia el filtro de modalidad y aplica los nuevos filtros
+        document.getElementById('modalidad').value = '';
+        aplicarFiltros();
+    });
+    
+
+
+
+      
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{% static 'bootstrap/js/programa.js'%}"></script>
+</div>
+{% endblock contenido %}

@@ -1,0 +1,34 @@
+credentials.json
+
+
+#Instalaciones
+#pip install djangorestframework
+#pip3 install certifi   
+#pip3 install djangorestframework-simplejwt
+#pip install pandas openpyxl  
+#pip install djangorestframework
+#pip install pyxlsb
+#superusuario = nombre analitica, correo analitica@gmail.com, documento=123456789 contraseña=123456789
+
+#para crear un nuevo rol:
+#1) ingreso al admin de django
+#2) en la tabla Permissions = creo un nuevo permiso 
+#2.1) ejemplo =  campo name=Can View Reporteador dashboard
+# campo content type (simepre Personas|persona)
+# campo codename = can_view_reporteador_dashboard (ejm) 
+#save
+
+#3)en la tabla rol, creo un nuevo rol
+#3.1) rol nombre = reporteador
+#   rol descripcion  = reporteador del sistema
+# Permissions (selecciono el nuevo permiso en este caso) = Personas|persona|Can view Reporteador dashboard
+
+#para urilizarlo debo manejar simpre el codename de esta manera
+#(para funciones o clases) {
+#  @permission_required('can_view_admin_dashboard')
+#  def administrador(request):
+#   }
+#(para vistas/templates){
+#   {% if perms.can_view_admin_dashboard %}               
+#         <span>Roles</span>           
+#   {% endif %}

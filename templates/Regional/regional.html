@@ -1,0 +1,185 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'bootstrap/css/administrador.css' %}">
+<div class="main p-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="text-center">
+                    <h1 class="h1 mb-4">Regional</h1>
+                </div>
+                <div class="mt-4">
+
+                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#crearModal">Agregar</button>
+
+                    
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                             
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                             
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for regionales in  regional%}
+                            <tr>
+                                
+                          
+                                
+                                <th scope="row">{{regionales.id}}</th>
+                                <td>{{regionales.regional}}</td>
+                    
+                                
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{regionales.id}}" data-regional="{{regionales.regional}}"  onclick="Editar_regional(this)">Editar</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  data-id="{{regionales.id}}" onclick="Delete_regional(this)">Eliminar</button>
+                                </td>
+                            </tr>
+                            {%endfor%}
+                            
+                         
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  
+    <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true"data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarModalLabel">Editar Bilinguismo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+            
+                    <form id="editarForm" method="post">
+                        <div class="form-group">
+                            {% csrf_token %}
+                         
+                       
+                            <div class="mb-3">
+                                <label for="" class="form-label">Centro de formación</label>
+                                {{ form_regional.regional}}
+                            </div>
+                            
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor para los modales -->
+    <div class="modal-container">
+        <div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="crearModalLabel">Crear Regional</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                
+                        <form  action="{% url 'cores:regional_create' %}" method="post">
+                            <div class="form-group">
+                                {% csrf_token %}
+                                {{ form_regional.as_p }}
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true"data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eliminarModalLabel">Eliminar regional</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que quieres eliminar esta regional?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deleteForm" method="post">
+                            {% csrf_token%}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-container {
+    position: relative;
+    margin: auto;
+    margin-top: 10%;
+    max-width: 600px;
+}
+.modal-container .modal {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 600px;
+    z-index: 1050;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+</style>
+<script>
+    function Delete_regional(button) {
+        const pk = button.getAttribute('data-id');
+        document.getElementById('deleteForm').action = `/regional/delete/${pk}`;
+    }
+
+ 
+    function Editar_regional(button){
+        const pk = button.getAttribute('data-id');
+        const id_regional = button.getAttribute('data-regional')
+   
+   
+        document.getElementById('editarForm').action = `/regional/edit/${pk}`;
+        document.getElementById('id_regional').value = id_regional
+ 
+       
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock contenido %}

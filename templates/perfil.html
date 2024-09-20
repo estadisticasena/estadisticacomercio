@@ -1,0 +1,119 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'bootstrap/css/perfil.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="main p-3">
+    <div class="text-center">
+        <div class="container">
+            <section class="sesion">
+               
+                <div class="form-boxs">
+                    <div class="profile-header">
+                        {% if request.user.is_authenticated %}
+                            <form action="{% url 'personas:editar_perfil' user.per_documento %}" method="post" enctype="multipart/form-data" >
+                                {% csrf_token %}
+                                <div class="form-group text-center">
+                                    <input type="file" class="d-none" id="fileUpload" name="per_image">
+                                    {% if formPersona.instance.per_image %}
+                                        <img id="profileImage" src="{{ formPersona.instance.per_image.url }}" alt="Imagen de perfil" class="profile-picture" style="cursor: pointer;">
+                                    {% else %}
+                                        <img id="profileImage" src="{% static 'bootstrap/img/perfil.png' %}" alt="Imagen de perfil" class="profile-picture" style="cursor: pointer;">
+                                       
+                                    {% endif %}
+                                </div>
+                        
+                        <h4 class="titulo_perfil">Editar Perfil</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                           
+                              
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="inputbox">
+                                            <ion-icon name="person-outline"></ion-icon>
+                                            <input type="text" name="per_documento" value="{{ request.user.per_documento }}" required>
+                                            <label for="">Documento</label>
+                                        </div>
+                                        <div class="inputbox">
+                                            <select name="per_tipo_documento" class="select" required>
+                                                {% for choice in formPersona.per_tipo_documento.field.choices %}
+                                                    {% if choice.0 %}
+                                                        <option value="{{ choice.0 }}" {% if choice.0 == request.user.per_tipo_documento %} selected {% endif %}>
+                                                            {{ choice.1 }}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                            <img src="{% static 'bootstrap/img/flec.png' %}" style="width: 10px; height: 10px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
+                                        </div>
+                                        <div class="inputbox">
+                                            <ion-icon name="person-outline"></ion-icon>
+                                            <input type="text" name="per_nombres" value="{{ request.user.per_nombres }}" required>
+                                            <label for="">Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputbox">
+                                            <ion-icon name="person-outline"></ion-icon>
+                                            <input type="text" name="per_apellidos" value="{{ request.user.per_apellidos }}" required>
+                                            <label for="">Apellido</label>
+                                        </div>
+                                        <div class="inputbox">
+                                            <ion-icon name="mail-outline"></ion-icon>
+                                            <input type="text" name="email" value="{{ request.user.email }}" required>
+                                            <label for="">Correo</label>
+                                        </div>
+                                        <div class="inputbox">
+                                            <ion-icon name="call-outline"></ion-icon>
+                                            <input type="text" name="per_telefono" value="{{ request.user.per_telefono }}" required>
+                                            <label for="">Teléfono</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container_botones">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <button type="submit"  class="boton_registro">Guardar</button>
+                                        
+                                        <div id="cambiar_contraseña">
+                                            <a href="{% url 'personas:password_change' %}" class="btn btn-link">Cambiar Contraseña</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                            {% endif %}
+                        </div>
+                      
+                            <div class="container">
+                                <a href="" >Cambiar Contraseña</a>
+                            </div>
+                      
+                    </div>
+                </div>
+                <div class="mensaje">
+                    {% if messages %}
+                    <div class="fixed-message" id="message-container">
+                        {% for message in messages %}
+                            <div class="alert alert-success text-center" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+        </div>
+            </section>
+         
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'bootstrap/js/mensajes.js' %}"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+{% endblock contenido %}

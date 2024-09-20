@@ -1,0 +1,128 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 16px;
+    max-width: 300px;
+    margin: 16px;
+    background-color: #fff;
+}
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.card-content {
+    font-size: 14px;
+    color: #555;
+}
+.card-item {
+    margin-bottom: 4px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .btn-icon img {
+    display: block; /* Asegura que la imagen se muestre correctamente */
+  }
+
+
+  .fixed-header {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 1;
+}
+
+.table-dark {
+    background-color: #274f3b;
+}
+.fixed-header {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 1;
+}
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.form-header {
+    margin-bottom: 20px;
+}
+.form-header h2 {
+    margin: 0;
+}
+.modal-header{
+    background-color: #274f3b;
+}
+.modal-title{
+    color: #ffffff;
+}
+
+/* Ajusta el tamaño del contenedor del modal */
+.modal-dialog {
+    max-width: 600px; /* Ajusta el ancho según sea necesario */
+    margin: 1.75rem auto; /* Ajusta el margen superior e inferior del modal */
+}
+
+/* Hacer que el modal sea un contenedor flex */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 70vh; /* Ajusta la altura según sea necesario */
+}
+
+/* Fijar el tamaño de la cabecera y el pie del modal */
+.modal-header,
+.modal-footer {
+    flex-shrink: 0; /* Evita que la cabecera y el pie se reduzcan de tamaño */
+}
+
+/* Asegura que la cabecera y el pie no se muevan */
+.modal-header {
+    /* Opcional: Ajustar altura de la cabecera si es necesario */
+    min-height: 60px; /* Ajusta la altura mínima si es necesario */
+}
+
+.modal-footer {
+    /* Opcional: Ajustar altura del pie si es necesario */
+    min-height: 50px; /* Ajusta la altura mínima si es necesario */
+}
+
+/* Hacer que el cuerpo del modal sea desplazable */
+.modal-body {
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+    flex: 1; /* Hace que el cuerpo del modal ocupe el espacio restante */
+}
+#eliminarModal .modal-content{
+    max-height: 200px;
+    height: 60vh;
+}
+#Modal_estrategia .modal-content{
+    max-height: 3000px;
+    height: 40vh;
+}
+#editarModal .modal-content{
+    max-height: 3000px;
+    height: 40vh;
+}
+#viewModal .modal-content{
+    max-height: 3000px;
+    height: 25vh;
+}
+
+.error-message{
+    color: red;
+}
+

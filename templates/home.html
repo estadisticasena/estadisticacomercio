@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar With Bootstrap</title>
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+
+    {%load static%}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/home.css'%}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/navbar.css'%}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+   
+</head>
+
+
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <a class="navbar-brand" href="{% url 'personas:Home'%}">Analitica</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                {% if request.user.is_authenticated %}
+                  
+                  <img src="{{ request.user.per_image.url}}" alt="Foto de perfil" class="rounded-circle" style="width: 40px; height: 40px;">
+             
+                <span class="navbar-text">Bienvenido, <a href="{% url 'personas:perfil'%}">{{ request.user.per_nombres }}</a></span>
+                {% endif %}
+            </li>
+        </ul>
+        </ul>
+    </nav>
+    
+<section class="contenedor ">
+
+    <div class="wrapper">
+        <aside id="sidebar">
+            
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <img src="{% static 'bootstrap/img/menu.png' %}" alt="Protection Icon" style="width: 25px; height: 25px;">
+                </button>
+            </div>
+            <ul class="sidebar-nav">
+                {% if perms.can_view_admin_dashboard %}
+
+                <li class="sidebar-item">
+                    <a href="{% url 'administrador'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Gestionar Usuario</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.can_view_admin_dashboard %}
+                <li class="sidebar-item">
+                    <a href="{% url 'cores:modalidad_index'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Gestionar Modalidad</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.can_view_admin_dashboard %}
+                <li class="sidebar-item">
+                    <a href="{% url 'cores:bilinguismo_index'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Gestionar Bilinguismo</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.can_view_admin_dashboard %}
+                <li class="sidebar-item">
+                    <a href="{% url 'cores:centro_de_formacion_index'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Gestionar Centro de formación</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.can_view_admin_dashboard %}
+                <li class="sidebar-item">
+                    <a href="{% url 'cores:regional_index'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Gestionar Regional</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.can_view_admin_dashboard %}
+                <li class="sidebar-item">
+                    <a href="{% url 'cores:nivel_formacion_index'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Gestionar Nivel formacion</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.can_view_admin_dashboard %}
+                <li class="sidebar-item">
+                    <a href="{% url 'cores:meta_index'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Gestionar Meta</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.can_view_admin_dashboard %}
+                <li class="sidebar-item">
+                    <a href="{% url 'personas:roles_index'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Roles</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.can_view_admin_dashboard %}
+                <li class="sidebar-item">
+                    <a href="{% url 'personas:permisos_index'%}" class="sidebar-link">
+                        <img src="{% static 'bootstrap/img/usuario.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Permisos</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'cores:formacion_regular_index'%}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
+                    
+                      
+                        <img src="{% static 'bootstrap/img/meta.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+
+                        <span>Metas</span>
+                    </a>
+                    <ul id="multi" class="sidebar-dropdown list-unstyled collapse" >
+                        <li class="sidebar-item">
+                            <a href="{% url 'cores:formacion_regular_index'%}" class="sidebar-link">Formacion Regular</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{% url 'cores:estrategias_institucionales_index'%}" class="sidebar-link">Estrategias Institucionales</a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+                {% if perms.can_view_reporteador_dashboard %}
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                       data-bs-target="#nuevo" aria-expanded="false" aria-controls="nuevo">
+                        <img src="{% static 'bootstrap/img/carga-en-la-nube.png' %}" alt="Nuevo Icono" style="width: 20px; height: 20px;">
+                        <span>Subir archivos</span>
+                    </a>
+                    <ul id="nuevo" class="sidebar-dropdown list-unstyled collapse">
+                        <li class="sidebar-item">
+                            <a href="{% url 'personas:poblacion_vulnerable'%}" class="sidebar-link">Poblacion vulnerable</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{% url 'personas:P04'%}" class="sidebar-link">P04</a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif%}
+             
+                <li class="sidebar-item">
+                    <a href="{% url 'cores:general'%}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                        <img src="{% static 'bootstrap/img/reporte.png' %}" alt="Protection Icon" style="width: 20px; height: 20px;">
+                        <span>Reportes</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" >
+                        <li class="sidebar-item">
+                            <a href="{% url 'cores:general'%}" class="sidebar-link">General</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{% url 'cores:cobertura_mapa'%}" class="sidebar-link">Cobertura</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{% url 'cores:programa'%}" class="sidebar-link">Programa</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{% url 'cores:Desercion'%}" class="sidebar-link" >Desercion</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{% url 'cores:estrategias_index'%}" class="sidebar-link">Estrategias</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{% url 'personas:poblacion_vulnerable_graficas'%}" class="sidebar-link">Poblacion vulnerables</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+               
+               
+                
+                
+         
+            </ul>
+            <div class="sidebar-footer">
+                <a href="{% url 'personas:cierre_sesion'%}" class="sidebar-link">
+                    <i><img src="{% static 'bootstrap/img/cerrar-sesion-icon.png' %}" alt="Protection Icon" style="    margin-left: -5px; width: 20px; height: 20px;"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+        {% block contenido%}
+
+
+        
+    
+        {% endblock contenido%}
+    </div>
+        <script src="{% static 'bootstrap/js/home.js'%}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    </section>
+</body>
+
+</html>

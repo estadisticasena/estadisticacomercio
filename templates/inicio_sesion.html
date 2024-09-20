@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/inicio_sesion.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Inicio_sesion</title>
+</head>
+
+<body>
+    {% include 'nav_inicio.html' %}
+    <section class="sesiones">
+       
+        <div class="form-boxes">
+            <div class="form-value">
+                {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% elif message.tags == 'success' %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+                <form action="{% url 'personas:inicio_sesion' %}" method="post" id="loginForm">
+                    {% csrf_token %}
+               
+                    <h2 class="login_titulo">Inicio de sesión</h2>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="text" name="per_documento" id="id_per_documento" required>
+                        <label for="id_per_documento">Documento de identidad</label>
+                        <span class="error-message" id="error_per_documento" style="display: none;">Este campo solo permite números.</span>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input type="password" name="password1" id="id_password1" required>
+                        <label for="id_password1">Contraseña</label>
+                        <div class="error-container">
+                            <span class="error-message" id="error_password1" style="display: none;">La contraseña debe tener al menos 8 caracteres y contener números y letras.</span>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <button type="submit" class="boton_registro">Iniciar Sesión</button>
+                    </div>
+                    <div class="bottom-links">
+                        <a class="contra" href="{% url 'password_reset' %}">Olvidé mi contraseña</a>
+                        <a href="{% url 'personas:registro' %}">Registrarse</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+     
+ 
+    </section>
+
+    <script>
+        // Script para ocultar mensajes flash después de un tiempo
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    alert.classList.add('fade');
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 600); // Tiempo para la animación de desvanecimiento
+                });
+            }, 5000); // Tiempo en milisegundos antes de ocultar el mensaje (5 segundos en este caso)
+        });
+    </script>
+
+    <script src="{% static 'bootstrap/js/inicio_sesion.js'%}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

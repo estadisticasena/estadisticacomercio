@@ -1,0 +1,56 @@
+
+.meta {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+}
+
+.cuadro {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    border-radius: 4px; 
+    
+}
+
+.verde {
+    background-color: green;
+}
+
+.amarilla {
+    background-color: yellow;
+}
+
+.naranja {
+    background-color: orange;
+}
+
+.roja {
+    background-color: red;
+}
+
+.prueba {
+    display: flex;
+    justify-content: space-between; /* Espacio uniforme entre los elementos */
+}
+.fixed-header {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 1;
+}
+.fixed-column {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    border-right: 2px solid #000000;
+
+}
+.table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #212529; /* Color de fondo para la columna fija */
+    color: #fff; /* Color del texto para la columna fija */
+    z-index: 2;
+    border-right: 2px solid #000000; /* Bordes para distinguir la columna fija */
+}

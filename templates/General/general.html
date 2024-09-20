@@ -1,0 +1,266 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+{%load static%}
+<link rel="stylesheet" href="{% static 'bootstrap/css/general.css' %}">
+
+<div class="main p-3">
+    <div class="text-center">
+        <div class="container">
+            <h1 class="h1 mb-4">General</h1>
+
+            <div class="row align-items-center">
+                <div class="col-md-3 mb-3">
+                   
+                    <div class="form-group row">
+                        <label for="filtroFechaInicio" class="col-sm-5 col-form-label col-form-label-sm">Fecha Inicio:</label>
+                        <div class="col-sm-7">
+                            <input type="date" class="form-control form-control-sm" id="fecha_inicio" name="fecha_inicio" value="{{ select_fecha_inicio }}" onchange="aplicarFiltrosGeneral()">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label col-form-label-sm">Fecha Fin:</label>
+                        <div class="col-sm-7">
+                            <input type="date" class="form-control form-control-sm" id="fecha_fin" name="fecha_fin" onchange="aplicarFiltrosGeneral()" value="{{ select_fecha_fin }}">
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="id_chart" value="chart1">
+                <input type="hidden" id="id_table" value="resultados_tabla">
+                
+                <div class="col-md-6 mb-3 d-flex prueba">
+                    <!-- Cuadros de colores -->
+                    <div class="meta">
+                        60-100%
+                        <div class="cuadro verde"></div>
+                    </div>
+                    <div class="meta">
+                        50-59%
+                        <div class="cuadro amarilla"></div>
+                    </div>
+                    <div class="meta">
+                        30-49%
+                        <div class="cuadro naranja"></div>
+                    </div>
+                    <div class="meta">
+                        0-29%
+                        <div class="cuadro roja"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container my-4">
+                <div class="btn-group mb-3" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary" onclick="showChart('chart1','resultados_tabla')">Titulada</button>
+                    <button type="button" class="btn btn-secondary"  onclick="showChart('chart2','resultados_tabla2')" >Complementaria</button>
+                </div>
+
+                <div id="chart1" class="chart">
+                    <canvas id="barchart_titulada"></canvas>
+                </div>
+
+                <div id="chart2" class="chart" style="display: none;">
+                    <canvas id="barchart_complementaria"></canvas>
+                </div>
+            </div>
+
+            <div class="container">
+                <div style="max-height: 400px; overflow-x: auto; overflow-y: auto;">
+                    <table class="table table-striped table-hover data-table" id="resultados_tabla">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col" style="min-width: 200px;" class="fixed-header"></th>
+                              
+                                <th scope="col" style="min-width: 200px;" class="fixed-header">Curso especial</th>
+                                <th scope="col" style="min-width: 200px;" class="fixed-header">Tenologo</th>
+                                <th scope="col" style="min-width: 100px;" class="fixed-header">Tecnico</th>
+                                <th scope="col" style="min-width: 100px;" class="fixed-header">Auxiliar</th>
+                                <th scope="col" style="min-width: 100px;" class="fixed-header">Operario </th>
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Evento</th>
+                     
+
+                             
+                                
+    
+                            </tr>
+                        </thead>
+                      
+                        <tbody id="resultados">
+                            <tr>
+                                <td class="fixed-column">Modalidad presencial</td>
+                            
+                                 {%for data_presencial in data_tabla_presencial%}
+                                <td>{{data_presencial}}</td>
+                               
+                                {%endfor%}
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Modalidad virtual</td>
+                         
+                                {%for data_virtual in data_tabla_virtual%}
+                                <td>{{data_virtual}}</td>
+                               
+                                {%endfor%}
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Meta Presencial</td>
+                                {% if metas_presencial %}
+                                    {% for meta in metas_presencial.0 %}  {# Accedemos a la primera (y única) tupla #}
+                                        <td>{{ meta }}</td>
+                                    {% endfor %}
+                                {% endif %}
+                            </tr>
+                            
+                            <tr>
+                                <td class="fixed-column">Meta Virtual</td>
+                              
+                                {% if metas_virtual %}
+                                {% for meta in metas_virtual.0 %}  {# Accedemos a la primera (y única) tupla #}
+                                    <td>{{ meta }}</td>
+                                {% endfor %}
+                            {% endif %}
+                            </tr>
+                          
+                        </tbody>
+                    </table>
+                    
+                </div>
+             </div>
+             <div class="container">
+                <div style="max-height: 400px; overflow-x: auto; overflow-y: auto;">
+                    <table class="table table-striped table-hover data-table" id="resultados_tabla2"style="display: none;" >
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col" style="min-width: 200px;" class="fixed-header"></th>
+                              
+        
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Bilinguismo</th>  
+                                <th scope="col" style="min-width: 150px;" class="fixed-header">Sin bilinguismo</th>  
+                             
+                                
+    
+                            </tr>
+                        </thead>
+                      
+                        <tbody id="resultados">
+                            <tr>
+                                <td class="fixed-column">Modalidad presencial</td>
+                              
+                                <td>{{bilinguismo_activos_data_presencial}}</td>
+                                <td>{{sin_bilinguismo_activos_data_presencial}}</td>
+                                
+                              
+                               
+                             
+                             
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Modalidad virtual</td>
+                                <td>{{bilinguismo_activos_virtual}}</td>
+                                <td>{{sin_bilinguismo_activos_data_virtual}}</td>
+                               
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Meta Presencial</td>
+                              
+                                <td>{{metas_formacion_bilinguismo_presencial.0}}</td>
+                                <td>{{metas_formacion_sin_bilinguismo_presencial.0}}</td>
+                                
+                             
+                        
+                            </tr>
+                            <tr>
+                                <td class="fixed-column">Meta Virtual</td>
+                             
+                                <td>{{metas_formacion_bilinguismo_virtual.0}}</td>
+                                <td>{{metas_formacion_sin_bilinguismo_virtual.0}}</td>
+                              
+
+
+                            </tr>
+                          
+                        </tbody>
+                    </table>
+                    
+                </div>
+             </div>
+             
+    </div>
+</div>
+
+<script id="data" type="application/json">
+    {{data|safe}}
+</script>
+<script id="data_values_presencial" type="application/json">
+    {{data_values_presencial|safe}}
+</script>
+<script id="data_values_virtual" type="application/json">
+    {{data_values_virtual|safe}}
+</script>
+<script id="labels_virtuales" type="application/json">
+    {{labels_virtuales|safe}}
+</script>
+<script id="labels_presenciales" type="application/json">
+    {{labels_presenciales|safe}}
+</script>
+<script id="metas_presencial_porcentaje_res" type="application/json">
+    {{metas_presencial_porcentaje_res|safe}}
+</script>
+<script id="metas_virtual_porcentaje_res" type="application/json">
+    {{metas_virtual_porcentaje_res|safe}}
+</script>
+<script id="metas_valores" type="application/json">
+    {{metas_valores|safe}}
+</script>
+
+
+
+
+
+    <!-- Metas_complementaria virtuales y presenciales  -->
+    <script id="metas_complementaria" type="application/json">
+        {{metas_complementaria|safe}}
+    </script>
+    <script id="aprendices_activos_complementaria" type="application/json">
+        {{aprendices_activos_complementaria|safe}}
+    </script>
+ 
+<script>
+
+function aplicarFiltrosGeneral() {
+    const fecha_fin = document.getElementById('fecha_fin').value;
+    const fecha_inicio = document.getElementById('fecha_inicio').value;
+
+  
+  
+
+
+    let url = "{% url 'cores:general' %}?";
+    if (fecha_fin) {
+        url += `fecha_fin=${fecha_fin}&`;
+    }
+    if (fecha_inicio) {
+        url += `fecha_inicio=${fecha_inicio}`;
+    }
+    window.location.href = url;
+
+
+
+    
+ 
+  }
+
+  document.getElementById('fecha_inicio').addEventListener('change', filtros_desercion);
+  document.getElementById('fecha_fin').addEventListener('change', filtros_desercion);
+  
+ 
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'bootstrap/js/chart.js' %}"></script>
+
+
+{% endblock contenido %}

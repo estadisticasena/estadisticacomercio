@@ -1,0 +1,70 @@
+{% extends 'home.html' %}
+{% block contenido %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'bootstrap/css/p04.css' %}" />
+  <div class="main p-3">
+    <div class="text-center">
+      <div class="container">
+        <h1 class="h1 mb-4">Poblacion vulnerable</h1>
+        {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == 'success' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+        <div class="container mt-5">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header text-white" style="background-color: #274f3b;">
+                  <h4 class="mb-0">Subir Archivo</h4>
+                </div>
+                <div class="card-body">
+                  <form method="post" enctype="multipart/form-data" action="{% url 'personas:upload_excel' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="fileUpload" class="form-label">Seleccionar archivo</label>
+                      <input class="form-control" type="file" id="excel_file" name="excel_file" />
+                    </div>
+                    <input id="per_documento" name="per_documento" type="hidden" class="form-control" value="{{ user.per_documento }}" />
+
+                    <div class="d-grid">
+                      <button type="submit" class="btn btn-secondary">Subir</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Script para ocultar mensajes flash después de un tiempo
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.classList.add('fade');
+                setTimeout(function() {
+                    alert.remove();
+                }, 600); // Tiempo para la animación de desvanecimiento
+            });
+        }, 5000); // Tiempo en milisegundos antes de ocultar el mensaje (5 segundos en este caso)
+    });
+</script>
+{% endblock %}

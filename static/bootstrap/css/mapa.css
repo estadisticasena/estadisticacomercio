@@ -1,0 +1,26 @@
+
+
+.mapadiv svg {
+    width: 100%; /* Ajusta el ancho del SVG al 100% del contenedor */
+    height: auto; /* Permite que la altura se ajuste proporcionalmente al ancho */
+    max-width: 100%; /* Limita el ancho máximo del SVG al 100% del contenedor */
+    display: block; /* Asegura que el SVG se muestre como un bloque */
+}
+
+.mapadiv path{
+  
+    stroke: rgb(98, 94, 94);
+    stroke-width: 2px;
+}
+
+.mapadiv path:hover {
+    fill: rgb(12, 111, 224);
+}
+.mapadiv path.selected {
+    fill: rgb(12, 111, 224); /* Mismo color o un color diferente para cuando esté seleccionado */
+}
+.mapa{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}

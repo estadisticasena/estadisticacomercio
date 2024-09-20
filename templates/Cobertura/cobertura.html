@@ -1,0 +1,114 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+
+{%load static%}
+<link rel="stylesheet" href="{% static 'bootstrap/css/tabla_programa.css'%}">
+<div class="main p-3">
+    <div class="text-center">
+        <div class="container">
+            <div class="mapadiv">
+                <h1 class="h1 mb-4">Cobertura</h1>
+                
+                <!-- Filtros usando Bootstrap en una línea -->
+                <div class="row justify-content-center">
+                    <div class="col-md-3 mb-3 offset-md-1"> <!-- Añadida clase offset-md-1 para mover los filtros un poco a la derecha -->
+                        <div class="form-group row">
+                            <label for="filtroFechaInicio" class="col-sm-5 col-form-label col-form-label-sm">Fecha Inicio:</label>
+                            <div class="col-sm-7">
+                                <input type="date" value="{{selected_fecha_inicio}}" class="form-control form-control-sm" id="filtroFechaInicio" onchange="obtenerProgramas()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="form-group row">
+                            <label for="filtroFechaFin" class="col-sm-5 col-form-label col-form-label-sm">Fecha Fin:</label>
+                            <div class="col-sm-7">
+                                <input type="date" class="form-control form-control-sm" value="{{selected_fecha_fin}}" id="filtroFechaFin" onchange="obtenerProgramas()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mb-3"> 
+                        <div class="form-group row">
+                            <label for="filtroSeleccion" class="col-sm-3 col-form-label col-form-label-sm">Municipio:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control form-control-sm custom-select" id="id_municipio" onchange="obtenerProgramas(this.value)">
+                                    <option value=""  {% if not selected_municipio %}selected{% endif %}>Selecciona Municipio</option>
+                                    {% for choice in municipio %}
+                                        <option value="{{ choice.0 }}" {% if selected_municipio == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% endfor %}
+                                    
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mb-3"> 
+                        <div class="form-group row">
+                            <label for="filtroMunicipio3" class="col-sm-3 col-form-label col-form-label-sm">Centro de centro de formacion:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control form-control-sm custom-select" id="id_centro_de_formacion"required  onchange="obtenerProgramas()">
+    
+                                    <option value="" {% if not selected_centro_de_formacion %}selected{% endif %}>Selecciona centro de formacion</option>
+                                    {% for choice in centro_de_formacion%}
+                                        <option value="{{ choice.id }}" {% if choice.id|stringformat:"s" == selected_centro_de_formacion %}selected{% endif %}>{{ choice.centro_de_formacion|title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+   
+    <div class="container">
+      <div class="row">
+          <div class="col-md-6">
+              <!-- Contenedor del mapa o cualquier otro contenido -->
+              <div class="map-container mt-4">
+                  {% include 'Cobertura/mapa.html' %}
+              </div>
+          </div>
+          <div class="col-md-6">
+              <!-- Contenedor para la tabla con desplazamiento -->
+              <div class="custom-scroll-table">
+                  <!-- Tabla con bordes redondeados y estilos de Bootstrap -->
+                  <table class="table-hover custom-table">
+                      <thead class="custom-thead">
+                          <tr>
+                              <th scope="col">Nivel de formacion</th>
+                              <th scope="col">Programa</th>
+                              <th scope="col">Cantidad</th>
+                              
+                              
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for programa in programa_data %}
+                        <tr>
+                            <td>{{ programa.nivel_formacion }}</td>
+                            <td>{{ programa.programa }}</td>
+                         
+                            <td>{{ programa.programa_count }}</td>
+                          
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td>No hay programas disponibles para este municipio.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+
+{% endblock contenido %}

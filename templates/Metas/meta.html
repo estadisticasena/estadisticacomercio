@@ -1,0 +1,491 @@
+{% extends 'home.html' %}
+
+{% block contenido %}
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static 'bootstrap/css/administrador.css' %}">
+<div class="main p-3">
+<meta name="csrf-token" content="{{ csrf_token }}">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="text-center">
+                    <h1 class="h1 mb-4">Listado de Metas</h1>
+                </div>
+                <div class="mt-4">
+
+
+                    
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Centro de formacion</th>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Fecha inicio</th>
+                                <th scope="col">Fecha fin</th>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total otras poblaciones</th>
+                                <th scope="col">Total victimas</th>
+                                <th scope="col">Total hechos victimizantes</th>
+                                <th scope="col">Total desplazados violencia</th>
+                                <th scope="col">Total formacion titulada</th>
+                                <th scope="col">Total formacion complementaria</th>
+                                <th scope="col">Total poblacion vulnerables</th>
+                                <th scope="col">Persona</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for metas in  view_metas%}
+                            <tr>
+                                
+                      
+                                <th scope="row">{{metas.met_id}}</th>
+                                <td>{{metas.met_centro_formacion}}</td>
+                                <td>{{metas.met_codigo}}</td>
+                                <td>{{metas.met_fecha_inicio}}</td>
+                                <td>{{metas.met_fecha_fin}}</td>
+                                <td>{{metas.met_año}}</td>
+                                <td>{{metas.met_total_otras_poblaciones}}</td>
+                                <td>{{metas.met_total_victimas}}</td>
+                                <td>{{metas.met_total_hechos_victimizantes}}</td>
+                                <td>{{metas.met_total_desplazados_violencia}}</td>
+                                <td>{{metas.met_total_titulada}}</td>
+                                <td>{{metas.met_total_complementaria}}</td>
+                                <td>{{metas.met_total_poblacion_vulnerable}}</td>
+                                <td>{{metas.per_documento}}</td>
+
+                        
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{metas.met_id}}" data-centro-formacion="{{metas.met_centro_formacion.id}}" data-codigo="{{metas.met_codigo}}"  data-fecha-inicio="{{metas.met_fecha_inicio}}" data-fecha-fin="{{metas.met_fecha_fin}}" data-año="{{metas.met_año}}" data-otras-poblaciones="{{metas.met_total_otras_poblaciones}}" data-victimas="{{metas.met_total_victimas}}" data-hechos-victimizantes="{{metas.met_total_hechos_victimizantes}}" data-desplazados-violencia="{{metas.met_total_desplazados_violencia}}"  data-titulada="{{metas.met_total_titulada}}" data-complementaria="{{metas.met_total_complementaria}}" data-poblacion-vulnerable="{{metas.met_total_poblacion_vulnerable}}"onclick="Editar_meta(this)">Editar</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  data-id="{{metas.met_id}}" onclick="Delete_meta(this)">Eliminar</button>
+                                </td>
+                            </tr>
+                            {%endfor%}
+                            
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="modalTitulo" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="Modal1-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitulo">Editar Metas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+            
+                    <form id="editarFormMeta" method="post">
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="" class="form-label">Centro formacion</label>
+                                {{ form_meta.met_centro_formacion }}
+                              
+    
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="" class="form-label">Fecha Inicio</label>
+                                {{ form_meta.met_fecha_inicio }}
+                              
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Fecha Fin</label>
+                                {{ form_meta.met_fecha_fin }}
+                                <span class="error-message" id="dateErrorMeta" style="display: none;  bottom: -45px;">La fecha final debe ser mayor que la fecha inicial</span>
+                                
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="some-class" class="form-label">Año</label>
+                                {{ form_meta.met_año }}
+                                
+                                <span class="error-message" id="errorDocumentoExists" style="display: none;  bottom: -45px;">El año ya esta registrado</span>
+                                
+                                
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Codigo</label>
+                                {{ form_meta.met_codigo}}
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Otras Poblaciones </label>
+                                {{ form_meta.met_total_otras_poblaciones }} 
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Total De Victimas</label>
+                                {{ form_meta.met_total_victimas }}
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Hechos Victimizantes</label>
+                                {{ form_meta.met_total_hechos_victimizantes }}
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Desplazados Violencia</label>
+                                {{ form_meta.met_total_desplazados_violencia }}
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Poblacion Vulnerable</label>
+                                {{ form_meta.met_total_poblacion_vulnerable }}
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Titulada</label>
+                                {{ form_meta.met_total_titulada }}
+    
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Complementaria</label>
+                                {{ form_meta.met_total_complementaria }}
+    
+                            </div>
+                            
+                    
+                        </div>
+                </div>
+                <div class="modal-footer">
+               
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-second-modal">Cerrar</button>
+                    <button type="submit" id="submit-second-modal_meta" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+   <!-- Segundo Modal META -->
+   <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="modalTitulo" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="Modal1-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitulo">Metas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="second-modal-form_meta" action="{% url 'cores:meta_estrategia_detalle' %}" method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="" class="form-label">Centro de formacion</label>
+                        {{ form_meta.met_centro_formacion }}
+                      
+
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="" class="form-label">Fecha Inicio</label>
+                        {{ form_meta.met_fecha_inicio }}
+                      
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Fecha Fin</label>
+                        {{ form_meta.met_fecha_fin }}
+                        <span class="error-message" id="dateErrorMeta" style="display: none;  bottom: -45px;">La fecha final debe ser mayor que la fecha inicial</span>
+                        
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Año</label>
+                        {{ form_meta.met_año }}
+                        
+                        <span class="error-message" id="errorDocumentoExists" style="display: none;  bottom: -45px;">El año ya esta registrado</span>
+                        
+                        
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Codigo</label>
+                        {{ form_meta.met_codigo}}
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Meta Otras Poblaciones </label>
+                        {{ form_meta.met_total_otras_poblaciones }} 
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Meta Total De Victimas</label>
+                        {{ form_meta.met_total_victimas }}
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Meta Hechos Victimizantes</label>
+                        {{ form_meta.met_total_hechos_victimizantes }}
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Meta Desplazados Violencia</label>
+                        {{ form_meta.met_total_desplazados_violencia }}
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Meta Poblacion Vulnerable</label>
+                        {{ form_meta.met_total_poblacion_vulnerable }}
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Meta Titulada</label>
+                        {{ form_meta.met_total_titulada }}
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Meta Complementaria</label>
+                        {{ form_meta.met_total_complementaria }}
+
+                    </div>
+                    
+                  
+                    <input id="per_documento" name="per_documento"  type="hidden" class="form-control" value="{{user.per_documento}}">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-second-modal">Cerrar</button>
+                    <button type="submit" id="submit-second-modal_meta" class="btn btn-primary">Guardar Cambios</button>
+
+                </div>
+                </form>
+            
+        </div>
+    </div>
+</div>
+
+
+   
+
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true"data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eliminarModalLabel">Eliminar Meta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que quieres eliminar esta meta?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deleteFormMeta" method="post">
+                            {% csrf_token%}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-container {
+    position: relative;
+    margin: auto;
+    margin-top: 10%;
+    max-width: 600px;
+}
+.modal-container .modal {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 600px;
+    z-index: 1050;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+</style>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+    
+.modal-header{
+    background-color: #274f3b;
+}
+.modal-title{
+    color: #ffffff;
+}
+
+/* Ajusta el tamaño del contenedor del modal */
+.modal-dialog {
+    max-width: 600px; /* Ajusta el ancho según sea necesario */
+    margin: 1.75rem auto; /* Ajusta el margen superior e inferior del modal */
+}
+
+/* Hacer que el modal sea un contenedor flex */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 70vh; /* Ajusta la altura según sea necesario */
+}
+
+/* Fijar el tamaño de la cabecera y el pie del modal */
+.modal-header,
+.modal-footer {
+    flex-shrink: 0; /* Evita que la cabecera y el pie se reduzcan de tamaño */
+}
+
+/* Asegura que la cabecera y el pie no se muevan */
+.modal-header {
+    /* Opcional: Ajustar altura de la cabecera si es necesario */
+    min-height: 60px; /* Ajusta la altura mínima si es necesario */
+}
+
+.modal-footer {
+    /* Opcional: Ajustar altura del pie si es necesario */
+    min-height: 50px; /* Ajusta la altura mínima si es necesario */
+}
+
+/* Hacer que el cuerpo del modal sea desplazable */
+.modal-body {
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+    flex: 1; /* Hace que el cuerpo del modal ocupe el espacio restante */
+}
+#eliminarModal .modal-content{
+    max-height: 3000px;
+    height: 20vh;
+}
+
+.error-message{
+    color: red;
+}
+</style>
+
+
+<script>
+    function Delete_meta(button) {
+        const pk = button.getAttribute('data-id');
+        document.getElementById('deleteFormMeta').action = `/meta/delete/${pk}`;
+    }
+    function Editar_meta(button){
+        const pk = button.getAttribute('data-id');
+        const met_centro_formacion = button.getAttribute('data-centro-formacion')
+        const met_codigo = button.getAttribute('data-codigo')
+        const met_fecha_inicio = button.getAttribute('data-fecha-inicio')
+        const met_fecha_fin = button.getAttribute('data-fecha-fin')
+ 
+        const met_año = button.getAttribute('data-año')
+        const met_total_otras_poblaciones = button.getAttribute('data-otras-poblaciones')
+        const met_total_victimas = button.getAttribute('data-victimas')
+        const met_total_hechos_victimizantes = button.getAttribute('data-hechos-victimizantes')
+        const met_total_desplazados_violencia = button.getAttribute('data-desplazados-violencia')
+        const met_total_titulada = button.getAttribute('data-titulada')
+        const met_total_complementaria = button.getAttribute('data-complementaria')
+        const met_total_poblacion_vulnerable = button.getAttribute('data-poblacion-vulnerable')
+       
+
+       
+
+         // Convertir fechas al formato YYYY-MM-DD
+    function formatDate(dateStr) {
+        const months = {
+            "Jan.": 1, "Feb.": 2, "Mar.": 3, "Apr.": 4, "May": 5, "Jun.": 6,
+            "Jul.": 7, "Aug.": 8, "Sept.": 9, "Oct.": 10, "Nov.": 11, "Dec.": 12
+        };
+        const parts = dateStr.split(' ');
+        const month = months[parts[0]];
+        const day = parts[1].replace(',', '');
+        const year = parts[2];
+        return `${year}-${month.toString().padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+    
+  
+        document.getElementById('editarFormMeta').action = `/meta/edit/${pk}`;
+        document.getElementById('id_met_centro_formacion').value = met_centro_formacion
+        document.getElementById('id_met_codigo').value = met_codigo
+        document.getElementById('id_met_fecha_inicio').value = met_fecha_inicio? formatDate(met_fecha_inicio) : '';
+        document.getElementById('id_met_fecha_fin').value = met_fecha_fin? formatDate(met_fecha_fin) : '';
+        document.getElementById('id_met_año').value = met_año
+        document.getElementById('id_met_total_otras_poblaciones').value = met_total_otras_poblaciones
+        document.getElementById('id_met_total_victimas').value = met_total_victimas
+        document.getElementById('id_met_total_hechos_victimizantes').value = met_total_hechos_victimizantes
+        document.getElementById('id_met_total_desplazados_violencia').value = met_total_desplazados_violencia
+        document.getElementById('id_met_total_titulada').value = met_total_titulada
+        document.getElementById('id_met_total_complementaria').value = met_total_complementaria
+        document.getElementById('id_met_total_poblacion_vulnerable').value = met_total_poblacion_vulnerable
+
+  
+    }
+
+    //fechas inicio y fin 
+document.getElementById('id_met_fecha_inicio').addEventListener('change', validateDates);
+document.getElementById('id_met_fecha_fin').addEventListener('change', validateDates);
+
+function validateDates() {
+    const startDateInput = document.getElementById('id_met_fecha_inicio');
+    const endDateInput = document.getElementById('id_met_fecha_fin');
+    const errorDiv = document.getElementById('dateErrorMeta');
+    const submitButton = document.getElementById('submit-second-modal_meta');
+
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+
+    if (startDate && endDate && startDate >= endDate) {
+        errorDiv.style.display = 'block';  // Mostrar mensaje de error
+        submitButton.disabled = true;      // Desactivar el botón
+    } else {
+        errorDiv.style.display = 'none';   // Ocultar mensaje de error
+        submitButton.disabled = false;     // Activar el botón
+    }
+}
+
+
+  //alaertas para el formulario de meta create
+  document.getElementById('id_met_año').addEventListener('input',function(){
+    const id_met_año = this.value
+
+
+    fetch('/verificar-año/',{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ id_met_año: id_met_año })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const errorAño = document.getElementById('errorDocumentoExists');
+        const botonBloqueado = document.getElementById('submit-second-modal_meta');
+        
+        if(data.existe){
+            errorAño.style.display = 'block';
+            botonBloqueado.disabled = true;
+        }else{
+            errorAño.style.display = 'none';
+            botonBloqueado.disabled = false;
+        }
+    });
+});
+
+</script>
+{% endblock contenido %}
