@@ -45,7 +45,7 @@
                 </button>
             </div>
             <ul class="sidebar-nav">
-           {% comment %}      {% if perms.can_view_admin_dashboard %} {% endcomment %}
+                {% if perms.can_view_admin_dashboard %}
 
                 <li class="sidebar-item">
                     <a href="{% url 'administrador'%}" class="sidebar-link">
@@ -53,7 +53,7 @@
                         <span>Gestionar Usuario</span>
                     </a>
                 </li>
-             {% comment %}    {% endif %} {% endcomment %}
+                {% endif %}
                 {% if perms.can_view_admin_dashboard %}
                 <li class="sidebar-item">
                     <a href="{% url 'cores:modalidad_index'%}" class="sidebar-link">
