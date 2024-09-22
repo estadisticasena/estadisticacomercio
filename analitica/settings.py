@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-9+%g4dk0x&@^d(gac*gf2p5o-oxbz87as5b$ru&k&wdg@x5f&l
 DEBUG = True
 
 ALLOWED_HOSTS = ['estadisticacomercio-production.up.railway.app']
+#ALLOWED_HOSTS = []
 
 
 import pymysql
@@ -88,16 +89,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'analitica',
-#        'USER': 'root',
-#        'PASSWORD': '',
-#        'HOST':'localhost',
-#        'PORT': '3306',
-#    }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'analisis',
+        'USER': 'root',
+        'PASSWORD': '12345678',
+        'HOST':'localhost',
+        'PORT': '3306',
+    }
+}
 
 
 DATABASES = {

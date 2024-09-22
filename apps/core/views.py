@@ -913,8 +913,8 @@ def Formacion_regular_index(request):
 class Meta_create(CreateView):
     model = Meta
     form_class = Form_meta
-    template_name = 'Formacion_regular/formacion_regular.html'
-    success_url = reverse_lazy('cores:formacion_regular_index') 
+    template_name = 'Metas/metas.html'
+    success_url = reverse_lazy('cores:meta_index') 
     
    
     def form_valid(self, form):
@@ -955,11 +955,12 @@ def get_meta(request, meta_id):
 def meta_index(request):
     view_meta = Meta.objects.all()
     form_meta  = Form_meta
-  
+    form = Form_meta
     
     context = {
          'view_metas':view_meta,
-         'form_meta':form_meta
+         'form_meta':form_meta,
+          'form':form,
  
     }
     

@@ -74,16 +74,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="form-group row">
-                        <div class="col-sm-12 d-flex align-items-center">
-                            <span class="icono" data-toggle="modal" data-target="#Modal1">
-                                Meta
-                                <img src="{% static 'bootstrap/img/agregar.png' %}" alt="Ícono de reporte" style="width: 20px; height: 20px;" data-toggle="modal" data-target="#myModalmeta">
-                            </span>
-                        </div>
-                    </div>
-                </div>
+               
                 {% endif %}
 
 
@@ -202,7 +193,7 @@
                 </div>
             </div>
             </div><!-- Primer Modal meta formacion create -->
-            <div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -310,99 +301,7 @@
                 </div>
             </div>
             
-            <!-- Segundo Modal -->
-            <div class="modal fade" id="myModalmeta" tabindex="-1" role="dialog" aria-labelledby="modalTitulo" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content" id="Modal1-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitulo">Metas</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="second-modal-form" action="{% url 'cores:meta_create' %}" method="post">
-                                {% csrf_token %}
            
-                                
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Fecha Inicio</label>
-                                    {{ form.met_fecha_inicio }}
-                                  
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Fecha Fin</label>
-                                    {{ form.met_fecha_fin }}
-                                    <span class="error-message" id="dateErrorMeta" style="display: none;  bottom: -45px;">La fecha final debe ser mayor que la fecha inicial</span>
-                                    
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Año</label>
-                                    {{ form.met_año }}
-                                    
-                                    <span class="error-message" id="errorDocumentoExists" style="display: none;  bottom: -45px;">El año ya esta registrado</span>
-                                    
-                                    
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Codigo</label>
-                                    {{ form.met_codigo}}
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Meta Otras Poblaciones </label>
-                                    {{ form.met_total_otras_poblaciones }} 
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Meta Total De Victimas</label>
-                                    {{ form.met_total_victimas }}
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Meta Hechos Victimizantes</label>
-                                    {{ form.met_total_hechos_victimizantes }}
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Meta Desplazados Violencia</label>
-                                    {{ form.met_total_desplazados_violencia }}
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Meta Poblacion Vulnerable</label>
-                                    {{ form.met_total_poblacion_vulnerable }}
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Meta Titulada</label>
-                                    {{ form.met_total_titulada }}
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Meta Complementaria</label>
-                                    {{ form.met_total_complementaria }}
-
-                                </div>
-                                
-                              
-                                <input id="per_documento" name="per_documento"  type="hidden" class="form-control" value="{{user.per_documento}}">
-
-                            </div>
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-second-modal">Cerrar</button>
-                                    <button type="submit" id="submit-second-modal" class="btn btn-primary">Guardar</button>
-                                </div>
-                            </form>
-                        
-                    </div>
-                </div>
-            </div>
-            
             
          
        

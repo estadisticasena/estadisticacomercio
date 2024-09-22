@@ -16,6 +16,10 @@
                 <div class="mt-4">
 
 
+    
+                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#myModalmeta">Agregar</button>
+
+                    
                     
                     <table class="table table-striped">
                         <thead>
@@ -88,12 +92,7 @@
                     <form id="editarFormMeta" method="post">
                         <div class="form-group">
                             {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="" class="form-label">Centro formacion</label>
-                                {{ form_meta.met_centro_formacion }}
-                              
-    
-                            </div>
+                            
                             
                             <div class="mb-3">
                                 <label for="" class="form-label">Fecha Inicio</label>
@@ -296,6 +295,102 @@
                 </div>
             </div>
         </div>
+
+
+
+         <!-- Segundo Modal -->
+         <div class="modal fade" id="myModalmeta" tabindex="-1" role="dialog" aria-labelledby="modalTitulo" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" id="Modal1-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitulo">Metas</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'cores:meta_create' %}" method="post">
+                            {% csrf_token %}
+       
+                            
+                            <div class="mb-3">
+                                <label for="" class="form-label">Fecha Inicio</label>
+                                {{ form.met_fecha_inicio }}
+                              
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Fecha Fin</label>
+                                {{ form.met_fecha_fin }}
+                                <span class="error-message" id="dateErrorMeta" style="display: none;  bottom: -45px;">La fecha final debe ser mayor que la fecha inicial</span>
+                                
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Año</label>
+                                {{ form.met_año }}
+                                
+                                <span class="error-message" id="errorDocumentoExists" style="display: none;  bottom: -45px;">El año ya esta registrado</span>
+                                
+                                
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Codigo</label>
+                                {{ form.met_codigo}}
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Otras Poblaciones </label>
+                                {{ form.met_total_otras_poblaciones }} 
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Total De Victimas</label>
+                                {{ form.met_total_victimas }}
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Hechos Victimizantes</label>
+                                {{ form.met_total_hechos_victimizantes }}
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Desplazados Violencia</label>
+                                {{ form.met_total_desplazados_violencia }}
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Poblacion Vulnerable</label>
+                                {{ form.met_total_poblacion_vulnerable }}
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Titulada</label>
+                                {{ form.met_total_titulada }}
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta Complementaria</label>
+                                {{ form.met_total_complementaria }}
+
+                            </div>
+                            
+                          
+                            <input id="per_documento" name="per_documento"  type="hidden" class="form-control" value="{{user.per_documento}}">
+
+                        </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-second-modal">Cerrar</button>
+                                <button type="submit"  class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
 
@@ -388,7 +483,8 @@
     }
     function Editar_meta(button){
         const pk = button.getAttribute('data-id');
-        const met_centro_formacion = button.getAttribute('data-centro-formacion')
+     
+   
         const met_codigo = button.getAttribute('data-codigo')
         const met_fecha_inicio = button.getAttribute('data-fecha-inicio')
         const met_fecha_fin = button.getAttribute('data-fecha-fin')
@@ -420,7 +516,7 @@
     
   
         document.getElementById('editarFormMeta').action = `/meta/edit/${pk}`;
-        document.getElementById('id_met_centro_formacion').value = met_centro_formacion
+    
         document.getElementById('id_met_codigo').value = met_codigo
         document.getElementById('id_met_fecha_inicio').value = met_fecha_inicio? formatDate(met_fecha_inicio) : '';
         document.getElementById('id_met_fecha_fin').value = met_fecha_fin? formatDate(met_fecha_fin) : '';
@@ -437,8 +533,8 @@
     }
 
     //fechas inicio y fin 
-document.getElementById('id_met_fecha_inicio').addEventListener('change', validateDates);
-document.getElementById('id_met_fecha_fin').addEventListener('change', validateDates);
+document.querySelectorAll('id_met_fecha_inicio').addEventListener('change', validateDates);
+document.querySelectorAll('id_met_fecha_fin').addEventListener('change', validateDates);
 
 function validateDates() {
     const startDateInput = document.getElementById('id_met_fecha_inicio');
