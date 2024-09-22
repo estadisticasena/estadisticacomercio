@@ -479,7 +479,7 @@ def grafica(request):
 
 
 
-@permission_required('can_view_admin_dashboard')
+#@permission_required('can_view_admin_dashboard')
 def administrador(request):
     personas = Persona.objects.all()
     roles = Rol.objects.all()
