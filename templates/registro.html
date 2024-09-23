@@ -1,18 +1,13 @@
 {% extends 'home.html' %}
 
 {% block contenido %}
-  {% load static %}
-<head>
 
-    <link rel="stylesheet" href="{% static 'bootstrap/css/registro.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>Registro</title>
- 
-</head>
+{%load static%}
+<link rel="stylesheet" href="{% static 'bootstrap/css/registro.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-<body>
-  
+    
     <section class="sesion">
         <div class="form-boxs">
             <h2 class="registro_titulo">Registro</h2>
@@ -118,4 +113,4 @@
 </body>
 
 </html>
-{% endblock %}
+{% endblock contenido %}
