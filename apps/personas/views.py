@@ -114,7 +114,9 @@ def inicio_sesion(request):
             user = authenticate(request, username=per_documento, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('cores:general')  # Redirigir a la página principal u otra página
+                return redirect('cores:general')
+            
+       
             else:
                 messages.error(request, 'Usuario o contraseña incorrectos')
     else:
