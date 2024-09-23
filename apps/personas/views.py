@@ -87,7 +87,7 @@ def Registro(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "¡Registro exitoso! Bienvenido.")
-                return redirect('personas:inicio_sesion')
+                return redirect('administrador')
             else:
                 messages.error(request, 'Error en autenticación')
         else:
