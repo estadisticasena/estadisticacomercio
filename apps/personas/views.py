@@ -548,8 +548,7 @@ def Subir_poblacion_vulnerable(request):
         except Exception as e:
             messages.error(request, f'Error al procesar el archivo: {str(e)}')
 
-        else:
-            messages.error(request, 'El archivo no es un archivo Excel válido.')
+       
 
         return redirect('personas:poblacion_vulnerable')
 

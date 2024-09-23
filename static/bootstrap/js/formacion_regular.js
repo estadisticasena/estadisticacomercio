@@ -1,43 +1,12 @@
   //funcionalidad para tabla, modales y filtros
   document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('#submit-second-modal').addEventListener('click', function(event) {
-        event.preventDefault(); // Evita el comportamiento por defecto del botón
-
-       
-       
-    });
+    
 
 });
 
 
 
-  //alaertas para el formulario de meta create
-  document.getElementById('id_met_año').addEventListener('input',function(){
-    const id_met_año = this.value
-    console.log(id_met_año)
 
-    fetch('/verificar-año/',{
-        method: 'POST',
-        headers:{
-            'Content-Type': 'application/json',
-            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ id_met_año: id_met_año })
-    })
-    .then(response => response.json())
-    .then(data => {
-        const errorAño = document.getElementById('errorDocumentoExists');
-        const botonBloqueado = document.getElementById('submit-second-modal');
-        
-        if(data.existe){
-            errorAño.style.display = 'block';
-            botonBloqueado.disabled = true;
-        }else{
-            errorAño.style.display = 'none';
-            botonBloqueado.disabled = false;
-        }
-    });
-});
 
 //verificacion de formulario metas formacion 
 $(document).ready(function() {
@@ -84,27 +53,6 @@ $(document).ready(function() {
 });
 
 
-//fechas inicio y fin 
-document.getElementById('id_met_fecha_inicio').addEventListener('change', validateDates);
-document.getElementById('id_met_fecha_fin').addEventListener('change', validateDates);
-
-function validateDates() {
-    const startDateInput = document.getElementById('id_met_fecha_inicio');
-    const endDateInput = document.getElementById('id_met_fecha_fin');
-    const errorDiv = document.getElementById('dateErrorMeta');
-    const submitButton = document.getElementById('submit-second-modal');
-
-    const startDate = new Date(startDateInput.value);
-    const endDate = new Date(endDateInput.value);
-
-    if (startDate && endDate && startDate >= endDate) {
-        errorDiv.style.display = 'block';  // Mostrar mensaje de error
-        submitButton.disabled = true;      // Desactivar el botón
-    } else {
-        errorDiv.style.display = 'none';   // Ocultar mensaje de error
-        submitButton.disabled = false;     // Activar el botón
-    }
-}
 
 
 //funcionalidad de eliminar meta formacion

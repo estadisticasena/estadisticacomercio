@@ -356,24 +356,24 @@ def general(request):
     
     #virtual bilinguismo
     
-    
-    bilinguismo = data_virtual.filter(nombre_programa_especial='PROGRAMA DE BILINGUISMO').values('total_aprendices_activos')
-    print('fff',bilinguismo)
+    programas_especificos = list(Bilinguismo_programa.objects.all().values_list('Bil_programa', flat=True))  
+    bilinguismo = data_virtual.filter(nombre_programa_formacion__in=programas_especificos).values('total_aprendices_activos')
+   
     bilinguismo_activos_virtual = [aprendices_bilinguismo['total_aprendices_activos'] for aprendices_bilinguismo in bilinguismo]
     bilinguismo_activos_data_virtual = sum(bilinguismo_activos_virtual)
-    
+   
     #presencial bilinguismo
     
-    bilinguismo = data_presencial.filter(nombre_programa_especial='PROGRAMA DE BILINGUISMO').values('total_aprendices_activos')
+    bilinguismo = data_presencial.filter(nombre_programa_formacion__in=programas_especificos).values('total_aprendices_activos')
     bilinguismo_activos_presencial = [aprendices_bilinguismo_presencial['total_aprendices_activos'] for aprendices_bilinguismo_presencial in bilinguismo]
     
     bilinguismo_activos_data_presencial = sum(bilinguismo_activos_presencial)
-    print('ojojo',bilinguismo_activos_data_presencial)
+   
     
     
     #virtual sin bilinguismo 
     sin_bilinguismo = data_virtual.filter(nivel_formacion='CURSO ESPECIAL').values('total_aprendices_activos')
-    print('ojojo',bilinguismo_activos_data_presencial)
+   
     sin_bilinguismo_data = sin_bilinguismo.exclude(nombre_programa_especial='PROGRAMA DE BILINGUISMO')
     sin_bilinguismo_activos_virtual = [aprendices_sin_bilinguismo_virtual['total_aprendices_activos'] for aprendices_sin_bilinguismo_virtual in sin_bilinguismo_data]
     
@@ -666,10 +666,11 @@ class Programa(TemplateView):
            
         
             if nivel_formacion_res == 'BILINGUISMO':
-                filtros_programa['nombre_programa_especial'] = 'PROGRAMA DE BILINGUISMO'
+                programas_especificos = Bilinguismo_programa.objects.all().values_list('Bil_programa', flat=True)
+                filtros_programa['nombre_programa_formacion__in'] = programas_especificos
                 
                 programas_bilinguismo = Bilinguismo_programa.objects.all().values_list('Bil_programa', flat=True)
-       
+                
             
                 programas_habilitados = P04.objects.filter(nivel_formacion='CURSO ESPECIAL', nombre_programa_formacion__in=programas_bilinguismo).values('nombre_programa_formacion').distinct()
              
@@ -902,7 +903,7 @@ class Desercion(TemplateView):
 def Formacion_regular_index(request):
     form = Form_meta
     form_meta_formacion = Form_meta_formacion
-
+    
  
     context = {
         'form':form,
@@ -973,7 +974,7 @@ class meta_edit(UpdateView):
     model = Meta
     from_class = Form_meta
     fields = [
-        'met_centro_formacion',
+      
         'met_codigo',
         'met_fecha_inicio',
         'met_fecha_fin',
@@ -1262,6 +1263,7 @@ class metas_formacion_filtros(TemplateView):
         resultados = Metas_formacion.objects.filter(**filtros_formacion).values(
             'metd_modalidad__modalidad',
             'metd_modalidad',
+            'met_centro_formacion__centro_de_formacion',
             'met_formacion_operario',
             'met_formacion_auxiliar',
             'met_formacion_tecnico',
@@ -1272,7 +1274,6 @@ class metas_formacion_filtros(TemplateView):
             'met_formacion_bilinguismo',
             'met_formacion_sin_bilinguismo',
             'met_id__met_codigo',
-            'met_id__met_centro_formacion',
             'met_id__met_fecha_inicio',
             'met_id__met_fecha_fin',
             'met_id__met_año',
