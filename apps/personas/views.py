@@ -288,7 +288,7 @@ def subir_P04(request):
                             'total_aprendices_masculinos': row['TOTAL_APRENDICES_MASCULINOS'],
                             'total_aprendices_femeninos': row['TOTAL_APRENDICES_FEMENINOS'],
                             'total_aprendices_nobinario': row['TOTAL_APRENDICES_NOBINARIO'] if 'TOTAL_APRENDICES_NOBINARIO' in df.columns else None,
-                            'total_aprendices': row['IDENTIFICADOR_FICHA'],
+                            'total_aprendices': row['TOTAL_APRENDICES'],
                             'duracion_programa': row['DURACION_PROGRAMA'],
                             'nombre_nuevo_sector': row['NOMBRE_NUEVO_SECTOR'],
                             'total_aprendices_activos': row['TOTAL_APRENDICES_ACTIVOS'],
