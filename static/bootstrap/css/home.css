@@ -22,7 +22,7 @@ h1 {
 
 body {
     font-family: 'Poppins', sans-serif;
-
+    overflow-x: hidden
 
 }
 
@@ -59,8 +59,8 @@ body {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 67px; /* Ajusta esto a la altura de tu navbar */
-    height: calc(100vh - 67px); /* Ajusta esto a la altura de tu navbar */
+    top: 66px; /* Ajusta esto a la altura de tu navbar */
+    height: calc(100vh - 66px); /* Ajusta esto a la altura de tu navbar */
     
 
 }
@@ -78,8 +78,8 @@ body {
 
 
 #sidebar.expand {
-    width: 260px;
-    min-width: 260px;
+    width: 280px;
+    min-width: 280px;
 }
 
 .toggle-btn {

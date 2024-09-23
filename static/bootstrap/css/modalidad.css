@@ -1,0 +1,34 @@
+.table {
+    border-collapse: collapse;
+    border-spacing: 0 0.75rem; /* Separación entre filas */
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9; /* Fondo alternativo para las filas */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1; /* Color de fondo al hacer hover */
+}
+
+.table thead th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+}
+
+.btn-sm {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem; /* Margen adicional entre botones */
+}
+
+@media (max-width: 768px) {
+    .btn {
+        width: 100%; /* Botones a lo ancho en móviles */
+    }
+}
