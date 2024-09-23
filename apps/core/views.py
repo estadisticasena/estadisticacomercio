@@ -259,7 +259,7 @@ def general(request):
     filtro_modalidad_virtual = 'VIRTUAL'
     
     data_presencial =  datos_p04.filter(modalidad_formacion=filtro_modalidad_presencial)
-    
+    print('jsjs',data_presencial)
     
     data_virtual =  datos_p04.filter(modalidad_formacion=filtro_modalidad_virtual)
     
@@ -356,7 +356,9 @@ def general(request):
     
     #virtual bilinguismo
     
+    
     bilinguismo = data_virtual.filter(nombre_programa_especial='PROGRAMA DE BILINGUISMO').values('total_aprendices_activos')
+    print('fff',bilinguismo)
     bilinguismo_activos_virtual = [aprendices_bilinguismo['total_aprendices_activos'] for aprendices_bilinguismo in bilinguismo]
     bilinguismo_activos_data_virtual = sum(bilinguismo_activos_virtual)
     
@@ -366,12 +368,12 @@ def general(request):
     bilinguismo_activos_presencial = [aprendices_bilinguismo_presencial['total_aprendices_activos'] for aprendices_bilinguismo_presencial in bilinguismo]
     
     bilinguismo_activos_data_presencial = sum(bilinguismo_activos_presencial)
-    
+    print('ojojo',bilinguismo_activos_data_presencial)
     
     
     #virtual sin bilinguismo 
     sin_bilinguismo = data_virtual.filter(nivel_formacion='CURSO ESPECIAL').values('total_aprendices_activos')
-    
+    print('ojojo',bilinguismo_activos_data_presencial)
     sin_bilinguismo_data = sin_bilinguismo.exclude(nombre_programa_especial='PROGRAMA DE BILINGUISMO')
     sin_bilinguismo_activos_virtual = [aprendices_sin_bilinguismo_virtual['total_aprendices_activos'] for aprendices_sin_bilinguismo_virtual in sin_bilinguismo_data]
     
@@ -460,6 +462,7 @@ def general(request):
         #metas_complementaria
         'metas_complementaria':metas_complementaria,
         'aprendices_activos_complementaria':aprendices_activos_complementaria,
+        
       
     }
 
