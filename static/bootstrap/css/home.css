@@ -61,8 +61,12 @@ body {
     position: fixed;
     top: 67px; /* Ajusta esto a la altura de tu navbar */
     height: calc(100vh - 67px); /* Ajusta esto a la altura de tu navbar */
+    
 
 }
+
+
+
 .sidebar-link {
     text-decoration: none; /* Elimina el subrayado de los enlaces */
 }
