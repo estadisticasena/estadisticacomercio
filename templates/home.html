@@ -149,9 +149,11 @@
                         <span>Reportes</span>
                     </a>
                     <ul id="auth" class="sidebar-dropdown list-unstyled collapse" >
+                        {% if perms.can_view_admin_dashboard %}
                         <li class="sidebar-item">
                             <a href="{% url 'cores:general'%}" class="sidebar-link">General</a>
                         </li>
+                        {% endif%}
                         <li class="sidebar-item">
                             <a href="{% url 'cores:cobertura_mapa'%}" class="sidebar-link">Cobertura</a>
                         </li>
@@ -161,12 +163,16 @@
                         <li class="sidebar-item">
                             <a href="{% url 'cores:Desercion'%}" class="sidebar-link" >Desercion</a>
                         </li>
+                        {% if perms.can_view_admin_dashboard %}
                         <li class="sidebar-item">
                             <a href="{% url 'cores:estrategias_index'%}" class="sidebar-link">Estrategias</a>
                         </li>
+                        {% endif%}
+                        {% if perms.can_view_admin_dashboard %}
                         <li class="sidebar-item">
                             <a href="{% url 'personas:poblacion_vulnerable_graficas'%}" class="sidebar-link">Poblacion vulnerables</a>
                         </li>
+                        {% endif%}
 
                     </ul>
                 </li>
