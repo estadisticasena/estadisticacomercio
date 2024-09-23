@@ -2,58 +2,52 @@
 
 {% block contenido %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'bootstrap/css/bilinguismo.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/regional.css' %}">
 <div class="main p-3">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="text-center">
-                    <h1 class="h1 mb-4">Listado de Programas de bilinguismo</h1>
+                <div class="text-center mb-4">
+                    <h1 class="h1">Listado de Programas de Bilingüismo</h1>
                 </div>
-                <div class="mt-4">
 
-                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#crearModal">Agregar</button>
+                <!-- Botón Agregar -->
+                <button type="button" class="btn btn-success btn-sm mb-3" data-toggle="modal" data-target="#crearModal">Agregar</button>
 
-                    
-                    <table class="table table-striped">
-                        <thead>
+                <!-- Tabla de Bilingüismo -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover text-center">
+                        <thead class="custom-thead">
                             <tr>
-                             
-                                <th scope="col">Codigo</th>
-                                <th scope="col">Version</th>
+                                <th scope="col">Código</th>
+                                <th scope="col">Versión</th>
                                 <th scope="col">Modalidad</th>
                                 <th scope="col">Programa</th>
                                 <th scope="col">Duración</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            {% for bilinguismos in  bilinguismo%}
+                            {% for bilinguismos in bilinguismo %}
                             <tr>
-                                
-                          
-                                <th>{{bilinguismos.bil_codigo}}</th>
-                                <td>{{bilinguismos.bil_version}}</td>
-                                <td>{{bilinguismos.bil_modalidad}}</td>
-                                <td>{{bilinguismos.Bil_programa}}</td>
-                                <td>{{bilinguismos.bil_duracion}}</td>
-                    
-                                
+                                <th scope="row">{{ bilinguismos.bil_codigo }}</th>
+                                <td>{{ bilinguismos.bil_version }}</td>
+                                <td>{{ bilinguismos.bil_modalidad }}</td>
+                                <td>{{ bilinguismos.Bil_programa }}</td>
+                                <td>{{ bilinguismos.bil_duracion }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{bilinguismos.bil_codigo}}" data-version="{{bilinguismos.bil_version}}" data-modalidad="{{bilinguismos.bil_modalidad.id}}"data-programa="{{bilinguismos.Bil_programa}}" data-duracion="{{bilinguismos.bil_duracion}}" onclick="Editar_bilinguismo(this)">Editar</button>
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  data-id="{{bilinguismos.bil_codigo}}" onclick="Delete_bilinguismo(this)">Eliminar</button>
+                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{ bilinguismos.bil_codigo }}" data-version="{{ bilinguismos.bil_version }}" data-modalidad="{{ bilinguismos.bil_modalidad.id }}" data-programa="{{ bilinguismos.Bil_programa }}" data-duracion="{{ bilinguismos.bil_duracion }}" onclick="Editar_bilinguismo(this)">Editar</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal" data-id="{{ bilinguismos.bil_codigo }}" onclick="Delete_bilinguismo(this)">Eliminar</button>
                                 </td>
                             </tr>
-                            {%endfor%}
-                            
-                        
+                            {% endfor %}
                         </tbody>
                     </table>
-                </div>
+                </div> <!-- table-responsive -->
             </div>
         </div>
     </div>
+</div>
 
 
   

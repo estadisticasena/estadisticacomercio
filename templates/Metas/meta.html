@@ -3,10 +3,9 @@
 {% block contenido %}
 {% load static %}
 
-
-<link rel="stylesheet" href="{% static 'bootstrap/css/administrador.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/regional.css' %}">
 <div class="main p-3">
-<meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
@@ -14,69 +13,63 @@
                     <h1 class="h1 mb-4">Listado de Metas</h1>
                 </div>
                 <div class="mt-4">
-
-
-    
                     <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#myModalmeta">Agregar</button>
 
-                    
-                    
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Centro de formacion</th>
-                                <th scope="col">Codigo</th>
-                                <th scope="col">Fecha inicio</th>
-                                <th scope="col">Fecha fin</th>
-                                <th scope="col">Año</th>
-                                <th scope="col">Total otras poblaciones</th>
-                                <th scope="col">Total victimas</th>
-                                <th scope="col">Total hechos victimizantes</th>
-                                <th scope="col">Total desplazados violencia</th>
-                                <th scope="col">Total formacion titulada</th>
-                                <th scope="col">Total formacion complementaria</th>
-                                <th scope="col">Total poblacion vulnerables</th>
-                                <th scope="col">Persona</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for metas in  view_metas%}
-                            <tr>
-                                
-                      
-                                <th scope="row">{{metas.met_id}}</th>
-                                <td>{{metas.met_centro_formacion}}</td>
-                                <td>{{metas.met_codigo}}</td>
-                                <td>{{metas.met_fecha_inicio}}</td>
-                                <td>{{metas.met_fecha_fin}}</td>
-                                <td>{{metas.met_año}}</td>
-                                <td>{{metas.met_total_otras_poblaciones}}</td>
-                                <td>{{metas.met_total_victimas}}</td>
-                                <td>{{metas.met_total_hechos_victimizantes}}</td>
-                                <td>{{metas.met_total_desplazados_violencia}}</td>
-                                <td>{{metas.met_total_titulada}}</td>
-                                <td>{{metas.met_total_complementaria}}</td>
-                                <td>{{metas.met_total_poblacion_vulnerable}}</td>
-                                <td>{{metas.per_documento}}</td>
-
-                        
-                                <td>
-                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{metas.met_id}}" data-centro-formacion="{{metas.met_centro_formacion.id}}" data-codigo="{{metas.met_codigo}}"  data-fecha-inicio="{{metas.met_fecha_inicio}}" data-fecha-fin="{{metas.met_fecha_fin}}" data-año="{{metas.met_año}}" data-otras-poblaciones="{{metas.met_total_otras_poblaciones}}" data-victimas="{{metas.met_total_victimas}}" data-hechos-victimizantes="{{metas.met_total_hechos_victimizantes}}" data-desplazados-violencia="{{metas.met_total_desplazados_violencia}}"  data-titulada="{{metas.met_total_titulada}}" data-complementaria="{{metas.met_total_complementaria}}" data-poblacion-vulnerable="{{metas.met_total_poblacion_vulnerable}}"onclick="Editar_meta(this)">Editar</button>
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  data-id="{{metas.met_id}}" onclick="Delete_meta(this)">Eliminar</button>
-                                </td>
-                            </tr>
-                            {%endfor%}
-                            
-                        
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Centro de formación</th>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Fecha inicio</th>
+                                    <th scope="col">Fecha fin</th>
+                                    <th scope="col">Año</th>
+                                    <th scope="col">Total otras poblaciones</th>
+                                    <th scope="col">Total víctimas</th>
+                                    <th scope="col">Total hechos victimizantes</th>
+                                    <th scope="col">Total desplazados violencia</th>
+                                    <th scope="col">Total formación titulada</th>
+                                    <th scope="col">Total formación complementaria</th>
+                                    <th scope="col">Total población vulnerables</th>
+                                    <th scope="col">Persona</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for metas in view_metas %}
+                                <tr>
+                                    <th scope="row">{{ metas.met_id }}</th>
+                                    <td>{{ metas.met_centro_formacion }}</td>
+                                    <td>{{ metas.met_codigo }}</td>
+                                    <td>{{ metas.met_fecha_inicio }}</td>
+                                    <td>{{ metas.met_fecha_fin }}</td>
+                                    <td>{{ metas.met_año }}</td>
+                                    <td>{{ metas.met_total_otras_poblaciones }}</td>
+                                    <td>{{ metas.met_total_victimas }}</td>
+                                    <td>{{ metas.met_total_hechos_victimizantes }}</td>
+                                    <td>{{ metas.met_total_desplazados_violencia }}</td>
+                                    <td>{{ metas.met_total_titulada }}</td>
+                                    <td>{{ metas.met_total_complementaria }}</td>
+                                    <td>{{ metas.met_total_poblacion_vulnerable }}</td>
+                                    <td>{{ metas.per_documento }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{ metas.met_id }}" data-centro-formacion="{{ metas.met_centro_formacion.id }}" data-codigo="{{ metas.met_codigo }}" data-fecha-inicio="{{ metas.met_fecha_inicio }}" data-fecha-fin="{{ metas.met_fecha_fin }}" data-año="{{ metas.met_año }}" data-otras-poblaciones="{{ metas.met_total_otras_poblaciones }}" data-victimas="{{ metas.met_total_victimas }}" data-hechos-victimizantes="{{ metas.met_total_hechos_victimizantes }}" data-desplazados-violencia="{{ metas.met_total_desplazados_violencia }}" data-titulada="{{ metas.met_total_titulada }}" data-complementaria="{{ metas.met_total_complementaria }}" data-poblacion-vulnerable="{{ metas.met_total_poblacion_vulnerable }}" onclick="Editar_meta(this)">Editar</button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal" data-id="{{ metas.met_id }}" onclick="Delete_meta(this)">Eliminar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+
 
     <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="modalTitulo" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" role="document">

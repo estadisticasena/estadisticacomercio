@@ -2,54 +2,42 @@
 
 {% block contenido %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'bootstrap/css/administrador.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/regional.css' %}">
 <div class="main p-3">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="text-center">
-                    <h1 class="h1 mb-4">Nivel de formación</h1>
+                <div class="text-center mb-4">
+                    <h1 class="h1">Nivel de formación</h1>
                 </div>
-                <div class="mt-4">
-
-                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#crearModal">Agregar</button>
-
-                    
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                             
-                                <th scope="col">#</th>
-                                <th scope="col">Nombre</th>
-                             
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for nivel_formaciones in  nivel_formacion%}
-                            <tr>
-                                
-                          
-                                
-                                <th scope="row">{{nivel_formaciones.id}}</th>
-                                <td>{{nivel_formaciones.nivel_formacion}}</td>
-                    
-                                
-                                <td>
-                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{nivel_formaciones.id}}" data-nivel="{{nivel_formaciones.nivel_formacion}}"  onclick="Editar_nivel(this)">Editar</button>
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  data-id="{{nivel_formaciones.id}}" onclick="Delete_nivel(this)">Eliminar</button>
-                                </td>
-                            </tr>
-                            {%endfor%}
-                            
-                         
-                        </tbody>
-                    </table>
-                </div>
+                <button type="button" class="btn btn-success btn-sm mb-3" data-toggle="modal" data-target="#crearModal">Agregar</button>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for nivel_formaciones in nivel_formacion %}
+                        <tr>
+                            <th scope="row">{{ nivel_formaciones.id }}</th>
+                            <td>{{ nivel_formaciones.nivel_formacion }}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{ nivel_formaciones.id }}" data-nivel="{{ nivel_formaciones.nivel_formacion }}" onclick="Editar_nivel(this)">Editar</button>
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal" data-id="{{ nivel_formaciones.id }}" onclick="Delete_nivel(this)">Eliminar</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
+
+
 
 
   

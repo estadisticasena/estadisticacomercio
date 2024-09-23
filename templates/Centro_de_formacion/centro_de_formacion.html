@@ -2,54 +2,44 @@
 
 {% block contenido %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'bootstrap/css/administrador.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/centro_de_formacion.css' %}">
 <div class="main p-3">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="text-center">
-                    <h1 class="h1 mb-4">Centro de formación</h1>
+                <div class="text-center mb-4">
+                    <h1 class="h1">Centro de Formación</h1>
                 </div>
-                <div class="mt-4">
-
-                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#crearModal">Agregar</button>
-
-                    
-                    <table class="table table-striped">
-                        <thead>
+                <button type="button" class="btn btn-success btn-sm mb-3" data-toggle="modal" data-target="#crearModal">Agregar</button>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover text-center">
+                        <thead class="custom-thead">
                             <tr>
-                             
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre</th>
-                             
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            {% for centro_de_formacions in  centro_de_formacion%}
+                            {% for centro_de_formacions in centro_de_formacion %}
                             <tr>
-                                
-                          
-                                
-                                <th scope="row">{{centro_de_formacions.id}}</th>
-                                <td>{{centro_de_formacions.centro_de_formacion}}</td>
-                    
-                                
+                                <th scope="row">{{ centro_de_formacions.id }}</th>
+                                <td>{{ centro_de_formacions.centro_de_formacion }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{centro_de_formacions.id}}" data-centro="{{centro_de_formacions.centro_de_formacion}}"  onclick="Editar_bilinguismo(this)">Editar</button>
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  data-id="{{centro_de_formacions.id}}" onclick="Delete_centro_de_formacion(this)">Eliminar</button>
+                                    <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModal" data-id="{{ centro_de_formacions.id }}" data-centro="{{ centro_de_formacions.centro_de_formacion }}" onclick="Editar_bilinguismo(this)">Editar</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal" data-id="{{ centro_de_formacions.id }}" onclick="Delete_centro_de_formacion(this)">Eliminar</button>
                                 </td>
                             </tr>
-                            {%endfor%}
-                            
-                         
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
 
 
   

@@ -2,7 +2,7 @@
 
 {% block contenido %}
   {% load static %}
-  <link rel="stylesheet" href="{% static 'bootstrap/css/administrador.css' %}" />
+  <link rel="stylesheet" href="{% static 'bootstrap/css/regional.css' %}" />
   <div class="main p-3">
     <div class="container">
       <div class="row justify-content-center">
@@ -29,13 +29,13 @@
                       <td>{{ persona.per_nombres }} {{ persona.per_apellidos }}</td>
                       <td>{{ persona.email }}</td>
                       <td>
-                          {% if persona.roles.exists %}
-                            {% for rol in persona.roles.all %}
-                              {{ rol.rol_nombre }}<br />
-                            {% endfor %}
-                          {% else %}
-                            Sin rol asignado
-                          {% endif %}
+                        {% if persona.roles.exists %}
+                          {% for rol in persona.roles.all %}
+                            {{ rol.rol_nombre }}<br />
+                          {% endfor %}
+                        {% else %}
+                          Sin rol asignado
+                        {% endif %}
                       </td>
                       <td>
                         <form method="post" action="{% url 'cores:asignacion_roles' %}">

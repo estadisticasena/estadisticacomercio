@@ -32,3 +32,8 @@
         width: 100%; /* Botones a lo ancho en móviles */
     }
 }
+
+table.table thead th {
+    background-color: #274f3b !important;
+    color: white !important;
+}
