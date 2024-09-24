@@ -234,7 +234,7 @@ def subir_P04(request):
                             p, creado = P04.objects.update_or_create(
                                 identificador_ficha=row['IDENTIFICADOR_FICHA'],
                                 defaults={
-                                    'fecha_p04': timezone.now(),
+                                    
                                     'codigo_regional': row.get('CODIGO_REGIONAL', ''),
                                     'nombre_regional': row.get('NOMBRE_REGIONAL', ''),
                                     'codigo_centro': row.get('CODIGO_CENTRO', ''),

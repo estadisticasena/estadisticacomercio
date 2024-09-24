@@ -80,7 +80,7 @@ class Persona(AbstractBaseUser, PermissionsMixin):
     
 class P04(models.Model):
     p04_id = models.AutoField(primary_key=True)
-    fecha_p04 = models.DateField()
+    fecha_p04 = models.DateField(default=timezone.now)
     codigo_regional = models.CharField(max_length=150)
     nombre_regional = models.CharField(max_length=150)
     codigo_centro = models.CharField(max_length=150)
