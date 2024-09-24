@@ -44,22 +44,30 @@
                         {% endif %}
                       </td>
                       <td>
-                        <form method="post" action="{% url 'cores:asignacion_roles' %}">
-                          {% csrf_token %}
-                          <input type="hidden" name="persona_id" value="{{ persona.per_documento }}" />
-                          <select name="rol_id" class="form-control-sm">
-                            {% for rol in roles %}
-                              <option value="{{ rol.rol_id }}"
-                                {% if rol in persona.roles.all %}
-                                  selected
-                                {% endif %}>
-                                {{ rol.rol_nombre }}
-                              </option>
-                            {% endfor %}
-                          </select>
-                          <button type="submit" class="btn btn-primary btn-sm">Asignar Rol</button>
-                        </form>
+                        <div class="d-flex align-items-center">
+                            <form method="post" action="{% url 'cores:asignacion_roles' %}"  style="display:inline; margin-right: 5px;">
+                              {% csrf_token %}
+                              <input type="hidden" name="persona_id" value="{{ persona.per_documento }}" />
+                              <select name="rol_id" class="form-control-sm me-2">
+                                {% for rol in roles %}
+                                  <option value="{{ rol.rol_id }}"
+                                    {% if rol in persona.roles.all %}
+                                      selected
+                                    {% endif %}>
+                                    {{ rol.rol_nombre }}
+                                  </option>
+                                {% endfor %}
+                              </select>
+                              
+                              <button type="submit" class="btn btn-primary btn-sm ">Asignar Rol</button>
+                            </form>
+                            <form method="post" action="{% url 'personas:eliminar_usuario' persona.per_documento %}" style="display:inline;">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-danger btn-sm " onclick="return confirm('¿Estás seguro de que deseas eliminar a este usuario?');">Eliminar</button>
+                            </form>
+                        </div>
                       </td>
+                      
                     </tr>
                   {% endfor %}
                 </tbody>

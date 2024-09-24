@@ -36,6 +36,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from decimal import Decimal
+from django.shortcuts import get_object_or_404
 #MENSAJE DE CAMBIO DE CONTRASEÑA
 class CustomPasswordChangeView(PasswordChangeView):
     success_url = reverse_lazy('personas:perfil') 
@@ -51,7 +52,7 @@ def Home(request):
     return render(request, 'home.html')
 
 #REGISTRO DE PERSONA
-
+@permission_required('can_view_admin_dashboard')
 def Registro(request):
     if request.method == 'POST':
         formPersona = PersonaForm(request.POST)
@@ -80,16 +81,7 @@ def Registro(request):
             )
             
 
-            # Autenticación y login
-            per_documento = formPersona.cleaned_data.get('per_documento')
-            raw_password = formPersona.cleaned_data.get('password1')
-            user = authenticate(username=per_documento, password=raw_password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, "¡Registro exitoso! Bienvenido.")
-                return redirect('administrador')
-            else:
-                messages.error(request, 'Error en autenticación')
+            return redirect('administrador')
         else:
             # Mostrar errores específicos del formulario
             for field in formPersona:
@@ -105,6 +97,7 @@ def Registro(request):
 
 
 #INICIO DE SESION DE PERSONA
+
 def inicio_sesion(request):
     if request.method == 'POST':
         formPersona = LoginForm(request.POST)
@@ -115,8 +108,6 @@ def inicio_sesion(request):
             if user is not None:
                 login(request, user)
                 return redirect('cores:general')
-            
-       
             else:
                 messages.error(request, 'Usuario o contraseña incorrectos')
     else:
@@ -165,6 +156,11 @@ def Editar_perfil(request, per_documento):
         
     return render(request, 'perfil.html', {'formPersona': formPersona})
 
+@permission_required('can_view_admin_dashboard')  # Asegúrate de que solo un administrador acceda
+def eliminar_usuario(request, persona_id):
+    user = get_object_or_404(Persona, per_documento=persona_id)
+    user.delete()
+    return redirect('administrador')  # Cambia esto a la vista a la que quieras redirigir
 
 #captura el correo que se ingreso en el formulario
 class CustomPasswordResetView(PasswordResetView):
@@ -195,122 +191,107 @@ def subir_P04(request):
     if request.method == 'POST':
         archivo = request.FILES.get('fileUpload')
         per_documento = request.POST.get('per_documento')
-      
-    
-        if archivo and archivo.name.endswith(('.xlsx','.xls','xml')):
+
+        if archivo and archivo.name.endswith(('.xlsx', '.xls', 'xml')):
             try:
-            
+                # Determina el motor para leer el archivo
                 if archivo.name.endswith('.xlsx'):
                     engine = 'openpyxl'
                 elif archivo.name.endswith('.xls'):
                     engine = 'xlrd'
-                
                 else:
                     raise ValueError('Formato de archivo no soportado')
-                
-                
+
+                # Obtener la persona asociada
                 selected_persona = Persona.objects.get(per_documento=per_documento)
+
                 hoja_principal = 'Reporte'
                 hoja_alternativa = 'Hoja1'
-                
-                
                 hojas = pd.ExcelFile(archivo).sheet_names
+
+                # Cargar el DataFrame
                 if hoja_principal in hojas:
                     df = pd.read_excel(archivo, header=4, sheet_name=hoja_principal)
                 else:
                     df = pd.read_excel(archivo, header=0, sheet_name=hoja_alternativa)
-                
-           
 
-                df['FECHA_INICIO_FICHA'] = pd.to_datetime(df['FECHA_INICIO_FICHA'], format='%d/%m/%Y').dt.strftime('%Y-%m-%d') 
-                df['FECHA_TERMINACION_FICHA'] = pd.to_datetime(df['FECHA_TERMINACION_FICHA'], format='%d/%m/%Y').dt.strftime('%Y-%m-%d') 
-               
-                
- 
- 
+                # Formato de fechas
+                df['FECHA_INICIO_FICHA'] = pd.to_datetime(df['FECHA_INICIO_FICHA'], format='%d/%m/%Y', errors='coerce').dt.strftime('%Y-%m-%d') 
+                df['FECHA_TERMINACION_FICHA'] = pd.to_datetime(df['FECHA_TERMINACION_FICHA'], format='%d/%m/%Y', errors='coerce').dt.strftime('%Y-%m-%d') 
                 df = df.replace(r'^\s*$', np.nan, regex=True)
-                
-       
- 
 
-                
-                
                 # Itera sobre las filas del DataFrame
                 for index, row in df.iterrows():
-                    
                     nombre_programa = row['NOMBRE_PROGRAMA_FORMACION']
-                    
+
+                    # Verifica si el programa ya existe
                     if not Programa.objects.filter(nombre_programa_f=nombre_programa).exists():
-                        
                         Programa.objects.create(nombre_programa_f=nombre_programa)
-               
-                    try:
-                        
-                        p, creado = P04.objects.update_or_create(
-                        identificador_ficha =row['IDENTIFICADOR_FICHA'],
-                        defaults={
-                            'fecha_p04': timezone.now(),
-                            'codigo_regional': row['CODIGO_REGIONAL'],
-                            'nombre_regional': row['NOMBRE_REGIONAL'],
-                            'codigo_centro': row['CODIGO_CENTRO'],
-                            'nombre_centro': row['NOMBRE_CENTRO'],
-                            'identificador_unico_ficha': row['IDENTIFICADOR_UNICO_FICHA'],
-                            'estado_curso': row['ESTADO_CURSO'],
-                            'codigo_nivel_formacion': row['CODIGO_NIVEL_FORMACION'],
-                            'nivel_formacion': row['NIVEL_FORMACION'],
-                            'codigo_jornada': row['CODIGO_JORNADA'],
-                            'nombre_jornada': row['NOMBRE_JORNADA'],
-                            'tipo_de_formacion': row['TIPO_DE_FORMACION'],
-                            'fecha_inicio_ficha': row['FECHA_INICIO_FICHA'],
-                            'fecha_terminacion_ficha': row['FECHA_TERMINACION_FICHA'],
-                            'etapa_ficha': row['ETAPA_FICHA'],
-                            'modalidad_formacion': row['MODALIDAD_FORMACION'],
-                            'codigo_sector_programa': row['CODIGO_SECTOR_PROGRAMA'],
-                            'nombre_sector_programa': row['NOMBRE_SECTOR_PROGRAMA'],
-                            'codigo_ocupacion': row['CODIGO_OCUPACION'],
-                            'nombre_ocupacion': row['NOMBRE_OCUPACION'],
-                            'codigo_programa': row['CODIGO_PROGRAMA'],
-                            'version_programa': row['VERSION_PROGRAMA'],
-                            'nombre_programa_formacion': row['NOMBRE_PROGRAMA_FORMACION'],
-                            'red': row['RED'] if 'RED' in df.columns else None,
-                            'codigo_pais_curso': row['CODIGO_PAIS_CURSO'],
-                            'nombre_pais_curso': row['NOMBRE_PAIS_CURSO'],
-                            'codigo_departamento_curso': row['CODIGO_DEPARTAMENTO_CURSO'],
-                            'nombre_departamento_curso': row['NOMBRE_DEPARTAMENTO_CURSO'],
-                            'codigo_municipio_curso': row['CODIGO_MUNICIPIO_CURSO'],
-                            'nombre_municipio_curso': row['NOMBRE_MUNICIPIO_CURSO'],
-                            'codigo_convenio': row['CODIGO_CONVENIO'],
-                            'nombre_convenio': row['NOMBRE_CONVENIO'],
-                            'ampliacion_cobertura': row['AMPLIACION_COBERTURA'],
-                            'codigo_programa_especial': row['CODIGO_PROGRAMA_ESPECIAL'],
-                            'nombre_programa_especial': nombre_programa,
-                            'numero_cursos': row['NUMERO_CURSOS'],
-                            'total_aprendices_masculinos': row['TOTAL_APRENDICES_MASCULINOS'],
-                            'total_aprendices_femeninos': row['TOTAL_APRENDICES_FEMENINOS'],
-                            'total_aprendices_nobinario': row['TOTAL_APRENDICES_NOBINARIO'] if 'TOTAL_APRENDICES_NOBINARIO' in df.columns else None,
-                            'total_aprendices': row['TOTAL_APRENDICES'],
-                            'duracion_programa': row['DURACION_PROGRAMA'],
-                            'nombre_nuevo_sector': row['NOMBRE_NUEVO_SECTOR'],
-                            'total_aprendices_activos': row['TOTAL_APRENDICES_ACTIVOS'],
-                            'per_documento': selected_persona
-                        }
-                       )
 
-                    except Exception as e:
-                        print(f"Error al guardar el registro en la fila {index}: {e}")
-                    
+                    # Asegúrate de que 'IDENTIFICADOR_FICHA' esté presente
+                    if 'IDENTIFICADOR_FICHA' in row:
+                        try:
+                            p, creado = P04.objects.update_or_create(
+                                identificador_ficha=row['IDENTIFICADOR_FICHA'],
+                                defaults={
+                                    'fecha_p04': timezone.now(),
+                                    'codigo_regional': row.get('CODIGO_REGIONAL', ''),
+                                    'nombre_regional': row.get('NOMBRE_REGIONAL', ''),
+                                    'codigo_centro': row.get('CODIGO_CENTRO', ''),
+                                    'nombre_centro': row.get('NOMBRE_CENTRO', ''),
+                                    'identificador_unico_ficha': row.get('IDENTIFICADOR_UNICO_FICHA', ''),
+                                    'estado_curso': row.get('ESTADO_CURSO', ''),
+                                    'codigo_nivel_formacion': row.get('CODIGO_NIVEL_FORMACION', ''),
+                                    'nivel_formacion': row.get('NIVEL_FORMACION', ''),
+                                    'codigo_jornada': row.get('CODIGO_JORNADA', ''),
+                                    'nombre_jornada': row.get('NOMBRE_JORNADA', ''),
+                                    'tipo_de_formacion': row.get('TIPO_DE_FORMACION', ''),
+                                    'fecha_inicio_ficha': row.get('FECHA_INICIO_FICHA', None),
+                                    'fecha_terminacion_ficha': row.get('FECHA_TERMINACION_FICHA', None),
+                                    'etapa_ficha': row.get('ETAPA_FICHA', ''),
+                                    'modalidad_formacion': row.get('MODALIDAD_FORMACION', ''),
+                                    'codigo_sector_programa': row.get('CODIGO_SECTOR_PROGRAMA', ''),
+                                    'nombre_sector_programa': row.get('NOMBRE_SECTOR_PROGRAMA', ''),
+                                    'codigo_ocupacion': row.get('CODIGO_OCUPACION', ''),
+                                    'nombre_ocupacion': row.get('NOMBRE_OCUPACION', ''),
+                                    'codigo_programa': row.get('CODIGO_PROGRAMA', ''),
+                                    'version_programa': row.get('VERSION_PROGRAMA', ''),
+                                    'nombre_programa_formacion': row.get('NOMBRE_PROGRAMA_FORMACION', ''),
+                                    'red': row.get('RED', None),
+                                    'codigo_pais_curso': row.get('CODIGO_PAIS_CURSO', ''),
+                                    'nombre_pais_curso': row.get('NOMBRE_PAIS_CURSO', ''),
+                                    'codigo_departamento_curso': row.get('CODIGO_DEPARTAMENTO_CURSO', ''),
+                                    'nombre_departamento_curso': row.get('NOMBRE_DEPARTAMENTO_CURSO', ''),
+                                    'codigo_municipio_curso': row.get('CODIGO_MUNICIPIO_CURSO', ''),
+                                    'nombre_municipio_curso': row.get('NOMBRE_MUNICIPIO_CURSO', ''),
+                                    'codigo_convenio': row.get('CODIGO_CONVENIO', ''),
+                                    'nombre_convenio': row.get('NOMBRE_CONVENIO', ''),
+                                    'ampliacion_cobertura': row.get('AMPLIACION_COBERTURA', ''),
+                                    'codigo_programa_especial': row.get('CODIGO_PROGRAMA_ESPECIAL', ''),
+                                    'nombre_programa_especial': nombre_programa,
+                                    'numero_cursos': row.get('NUMERO_CURSOS', 0),
+                                    'total_aprendices_masculinos': row.get('TOTAL_APRENDICES_MASCULINOS', 0),
+                                    'total_aprendices_femeninos': row.get('TOTAL_APRENDICES_FEMENINOS', 0),
+                                    'total_aprendices_nobinario': row.get('TOTAL_APRENDICES_NOBINARIO', None),
+                                    'total_aprendices': row.get('TOTAL_APRENDICES', 0),
+                                    'duracion_programa': row.get('DURACION_PROGRAMA', 0),
+                                    'nombre_nuevo_sector': row.get('NOMBRE_NUEVO_SECTOR', ''),
+                                    'total_aprendices_activos': row.get('TOTAL_APRENDICES_ACTIVOS', 0),
+                                    'per_documento': selected_persona
+                                }
+                            )
+                        except Exception as e:
+                            print(f"Error al guardar el registro en la fila {index}: {e}")
 
-            
                 messages.success(request, "Datos guardados exitosamente.")
 
-            
             except Exception as e:
-              messages.error(request, f"Error al procesar el archivo: {str(e)}")
+                messages.error(request, f"Error al procesar el archivo: {str(e)}")
         else:
             messages.error(request, "Por favor suba un archivo válido en formato .xlsx.")
         
-        
     return redirect('personas:P04')
+
 def contar_registros_p04():
     numero_registros_guardados_db = P04.objects.count()
     

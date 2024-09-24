@@ -856,24 +856,26 @@ class Desercion(TemplateView):
         
         desercion_datos = P04.objects.filter(**filtros_desercion)
        
+        total_aprendices_filtrados = desercion_datos.aggregate(Sum('total_aprendices'))['total_aprendices__sum'] or 0
+        total_activos_filtrados = desercion_datos.aggregate(Sum('total_aprendices_activos'))['total_aprendices_activos__sum'] or 0
+
+        print(f"Total Aprendices Filtrados: {total_aprendices_filtrados}, Total Activos Filtrados: {total_activos_filtrados}")
+   
         #deserciones
         aprendices_activos_resultado = [resultado.total_aprendices_activos for resultado in desercion_datos]
-        aprendices_activos_resultado_res = [resultado.total_aprendices for resultado in desercion_datos]
         
         aprendices_totales_resultado = [resultado_total.total_aprendices for resultado_total in desercion_datos]
-        for dato in desercion_datos:
-            print(f' Total Aprendices: {dato.total_aprendices}')
+      
 
-        total_aprendices_sum = desercion_datos.aggregate(Sum('total_aprendices'))['total_aprendices__sum']
-        print('aprendices',aprendices_totales_resultado)
+        
         
         resultado_activo = sum(aprendices_activos_resultado)
-        print('activos',total_aprendices_sum)
+        print('activos',resultado_activo)
         
-        resultado_total_aprendices = sum(aprendices_activos_resultado_res)
+        resultado_total_aprendices = sum(aprendices_totales_resultado)
         print('aprendices',resultado_total_aprendices)
         deserciones = resultado_total_aprendices - resultado_activo
-        print('aprendices',deserciones)
+        
         paginator = Paginator(desercion_datos, 10)  
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)

@@ -89,11 +89,11 @@
                             </form>
                             {% endif %}
                         </div>
-                      
+                        {% if perms.can_view_admin_dashboard %}
                             <div class="container">
                                 <a href="" >Cambiar Contraseña</a>
                             </div>
-                      
+                        {% endif %}
                     </div>
                 </div>
                 <div class="mensaje">

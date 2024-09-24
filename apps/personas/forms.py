@@ -44,7 +44,8 @@ class LoginForm(forms.Form):
     
     def clean_per_documento(self):
         per_documento = self.cleaned_data['per_documento']
-        # No es necesario validar con isdigit() para un IntegerField
+        if not isinstance(per_documento, int):
+            raise forms.ValidationError("Debe ser un número entero.")
         return per_documento
 
     def clean_password1(self):
@@ -52,6 +53,7 @@ class LoginForm(forms.Form):
         if len(password1) < 8 or not any(char.isdigit() for char in password1) or not any(char.isalpha() for char in password1):
             raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres y contener números y letras.")
         return password1
+
 
 
 #FORMS DE EDITAR PERFIL

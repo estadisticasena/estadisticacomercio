@@ -31,6 +31,10 @@ urlpatterns = [
     path('permisos/create/',views.Permisos_create.as_view(), name="permisos_create"),
     path('permisos/delete/<int:pk>',views.Permisos_delete.as_view(), name="permisos_delete"),
     path('permisos/edit/<int:pk>',views.Permisos_edit.as_view(), name="permisos_edit"),
+    
+    path('eliminar_usuario/<int:persona_id>/', views.eliminar_usuario, name='eliminar_usuario'),
+
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
