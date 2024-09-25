@@ -859,7 +859,6 @@ class Desercion(TemplateView):
         total_aprendices_filtrados = desercion_datos.aggregate(Sum('total_aprendices'))['total_aprendices__sum'] or 0
         total_activos_filtrados = desercion_datos.aggregate(Sum('total_aprendices_activos'))['total_aprendices_activos__sum'] or 0
 
-        print(f"Total Aprendices Filtrados: {total_aprendices_filtrados}, Total Activos Filtrados: {total_activos_filtrados}")
    
         #deserciones
         aprendices_activos_resultado = [resultado.total_aprendices_activos for resultado in desercion_datos]
@@ -870,10 +869,8 @@ class Desercion(TemplateView):
         
         
         resultado_activo = sum(aprendices_activos_resultado)
-        print('activos',resultado_activo)
         
         resultado_total_aprendices = sum(aprendices_totales_resultado)
-        print('aprendices',resultado_total_aprendices)
         deserciones = resultado_total_aprendices - resultado_activo
         
         paginator = Paginator(desercion_datos, 10)  

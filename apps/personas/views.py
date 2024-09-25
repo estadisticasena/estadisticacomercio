@@ -216,8 +216,8 @@ def subir_P04(request):
                     df = pd.read_excel(archivo, header=0, sheet_name=hoja_alternativa)
 
                 # Formato de fechas
-                df['FECHA_INICIO_FICHA'] = pd.to_datetime(df['FECHA_INICIO_FICHA'], format='%d/%m/%Y', errors='coerce').dt.strftime('%Y-%m-%d') 
-                df['FECHA_TERMINACION_FICHA'] = pd.to_datetime(df['FECHA_TERMINACION_FICHA'], format='%d/%m/%Y', errors='coerce').dt.strftime('%Y-%m-%d') 
+                df['FECHA_INICIO_FICHA'] = pd.to_datetime(df['FECHA_INICIO_FICHA'], format='%d/%m/%Y').dt.strftime('%Y-%m-%d') 
+                df['FECHA_TERMINACION_FICHA'] = pd.to_datetime(df['FECHA_TERMINACION_FICHA'], format='%d/%m/%Y').dt.strftime('%Y-%m-%d') 
                 df = df.replace(r'^\s*$', np.nan, regex=True)
 
                 # Itera sobre las filas del DataFrame
