@@ -43,6 +43,7 @@ def Verificar_año(request):
 
 
 def estrategias_institucionales(request):
+    
     return render(request, 'Estrategias_institucionales/estrategias_institucionales.html')
 
 def formacion_regular(request):
@@ -55,6 +56,7 @@ def estrategias(request):
     select_fecha_inicio = request.GET.get('fecha_inicio')
     
     select_fecha_fin = request.GET.get('fecha_fin')
+    select_centro_de_formacion = request.GET.get('id_centro_de_formacion','')
     
     datos_p04= P04.objects.all()
     
@@ -64,7 +66,16 @@ def estrategias(request):
     if select_fecha_inicio and select_fecha_fin:
         datos_p04 = datos_p04.filter(fecha_inicio_ficha__gte=select_fecha_inicio, fecha_inicio_ficha__lte=select_fecha_fin)
    
+    if select_centro_de_formacion:
+        def obtener_nombre_centro_formacion(id_centro_formacion):
+            nombre_centro_formacion = get_object_or_404(Centro_de_formacion, id=id_centro_formacion)
+            return nombre_centro_formacion.centro_de_formacion 
     
+    # Obtener el nombre del centro a partir del ID
+        centro_de_formacion_res = obtener_nombre_centro_formacion(select_centro_de_formacion)
+    
+    # Aplicar el filtro usando el nombre del centro
+        datos_p04 = datos_p04.filter(nombre_centro=centro_de_formacion_res)
     
     
     filtro_modalidad_presencial = 'PRESENCIAL'
@@ -200,6 +211,7 @@ def estrategias(request):
         
     
     context = {
+        
         'total_curso_especial_activos':json.dumps(total_curso_especial_activos),
         'total_tecnologo_activos':json.dumps(total_tecnologo_activos),
         'total_tecnico_activos':json.dumps(total_tecnico_activos),
@@ -210,6 +222,8 @@ def estrategias(request):
         'total_bilinguismo_activos':json.dumps(total_bilinguismo_activos),
         'total_sin_bilinguismo_activos':json.dumps(total_sin_bilinguismo_activos),
         'estrategias':Estrategia.objects.all(),
+        'centro_de_formacion' :Centro_de_formacion.objects.all(),
+        'select_centro_de_formacion':select_centro_de_formacion,
         'select_estrategia':select_estrategia,
         'presencial_meta':presencial_meta,
         'virtual_meta_estrategia':virtual_meta_estrategia,
@@ -241,17 +255,27 @@ def general(request):
     select_fecha_fin = request.GET.get('fecha_fin',select_fecha_fin_default)
     select_fecha_fin_ff = datetime.strptime(select_fecha_fin, "%Y-%m-%d").date()
     select_fecha_inicio_ff = datetime.strptime(select_fecha_inicio, "%Y-%m-%d").date()
+    select_centro_de_formacion = request.GET.get('id_centro_de_formacion','')
+
 
     datos_p04= P04.objects.all()
     
     
-   
+    
     
     if select_fecha_inicio and select_fecha_fin:
         datos_p04 = datos_p04.filter(fecha_inicio_ficha__gte=select_fecha_inicio, fecha_inicio_ficha__lte=select_fecha_fin)
     
-     
-
+    if select_centro_de_formacion:
+        def obtener_nombre_centro_formacion(id_centro_formacion):
+            nombre_centro_formacion = get_object_or_404(Centro_de_formacion, id=id_centro_formacion)
+            return nombre_centro_formacion.centro_de_formacion  # Asumiendo que este campo contiene el nombre
+    
+    # Obtener el nombre del centro a partir del ID
+        centro_de_formacion_res = obtener_nombre_centro_formacion(select_centro_de_formacion)
+    
+    # Aplicar el filtro usando el nombre del centro
+        datos_p04 = datos_p04.filter(nombre_centro=centro_de_formacion_res)
         
     #funcionalida para grafica titulada
  
@@ -259,7 +283,7 @@ def general(request):
     filtro_modalidad_virtual = 'VIRTUAL'
     
     data_presencial =  datos_p04.filter(modalidad_formacion=filtro_modalidad_presencial)
-    print('jsjs',data_presencial)
+  
     
     data_virtual =  datos_p04.filter(modalidad_formacion=filtro_modalidad_virtual)
     
@@ -446,7 +470,8 @@ def general(request):
         #grafica complementaria
         'bilinguismo_activos_virtual':bilinguismo_activos_data_virtual,
         'bilinguismo_activos_data_presencial':bilinguismo_activos_data_presencial,
-        
+        'centro_de_formacion' :Centro_de_formacion.objects.all(),
+        'select_centro_de_formacion':select_centro_de_formacion,
         'sin_bilinguismo_activos_data_virtual':sin_bilinguismo_activos_data_virtual,
         'sin_bilinguismo_activos_data_presencial':sin_bilinguismo_activos_data_presencial,
         #metas tabla
@@ -1030,6 +1055,7 @@ class Meta_formacion_edit(UpdateView):
               'metd_modalidad',
               'met_formacion_operario',
               'met_formacion_auxiliar',
+              'met_centro_formacion__centro_de_formacion'
               'met_formacion_tecnico',
               'met_formacion_profundizacion_tecnica',
               'met_formacion_tecnologo',

@@ -2,3 +2,12 @@ table.table thead th {
     background-color: #274f3b !important;
     color: white !important;
 }
+/* Estilos específicos para el modal de eliminación */
+#eliminarModalBody {
+    min-height: 60px; /* Ajusta la altura mínima */
+    padding: 20px; /* Espaciado alrededor del contenido */
+    display: flex; /* Permite centrar el contenido */
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    text-align: center; /* Alinea el texto al centro */
+}

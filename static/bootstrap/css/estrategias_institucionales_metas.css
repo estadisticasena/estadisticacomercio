@@ -110,11 +110,11 @@
     height: 60vh;
 }
 #Modal_estrategia .modal-content{
-    max-height: 3000px;
+    max-height: 250px;
     height: 40vh;
 }
 #editarModal .modal-content{
-    max-height: 3000px;
+    max-height: 250px;
     height: 40vh;
 }
 #viewModal .modal-content{

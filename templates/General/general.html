@@ -27,6 +27,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <input type="hidden" id="id_chart" value="chart1">
                 <input type="hidden" id="id_table" value="resultados_tabla">
                 
@@ -47,6 +48,20 @@
                     <div class="meta">
                         0-29%
                         <div class="cuadro roja"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group row">
+                        <label for="filtroMunicipio3" class="col-sm-3 col-form-label col-form-label-sm">Centro de centro de formacion:</label>
+                        <div class="col-sm-9">
+                            <select class="form-control form-control-sm custom-select" id="id_centro_de_formacion" onchange="aplicarFiltrosGeneral()" required>
+
+                                <option value="{{ select_centro_de_formacion }}" disabled {% if not select_centro_de_formacion %}selected{% endif %}>Selecciona centro de formacion</option>
+                                {% for choice in centro_de_formacion%}
+                                    <option value="{{ choice.id }}" {% if choice.id|stringformat:"s" == select_centro_de_formacion %}selected{% endif %}>{{ choice.centro_de_formacion|title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -232,6 +247,7 @@
 function aplicarFiltrosGeneral() {
     const fecha_fin = document.getElementById('fecha_fin').value;
     const fecha_inicio = document.getElementById('fecha_inicio').value;
+    const id_centro_de_formacion = document.getElementById('id_centro_de_formacion').value;
 
   
   
@@ -241,9 +257,15 @@ function aplicarFiltrosGeneral() {
     if (fecha_fin) {
         url += `fecha_fin=${fecha_fin}&`;
     }
+    if (id_centro_de_formacion) {
+        url += `id_centro_de_formacion=${id_centro_de_formacion}&`;
+    }
     if (fecha_inicio) {
         url += `fecha_inicio=${fecha_inicio}`;
     }
+
+
+    
     window.location.href = url;
 
 
