@@ -112,7 +112,7 @@
                         <tr>
                             <th scope="col" style="min-width: 150px;" class="fixed-header">Nombre</th>
                             <th scope="col" style="min-width: 200px;" class="fixed-header">Modalidad</th>
-                            <th scope="col" style="min-width: 100px;" class="fixed-header">Total meta</th>
+                            
                             <th scope="col" style="min-width: 100px;" class="fixed-header">Auxiliar</th>
                             <th scope="col" style="min-width: 100px;" class="fixed-header">Bilinguismo</th>
                        
@@ -498,9 +498,7 @@
                             <div class="col-md-6">
                                 <strong>Codigo:</strong> <span id="field1">Valor 1</span>
                             </div>
-                            <div class="col-md-6">
-                                <strong>Centro de formacion:</strong> <span id="field2">Valor 2</span>
-                            </div>
+                           
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -623,7 +621,7 @@
                       row.innerHTML = `
                           <td>${dato.est_id__est_nombre}</td>
                           <td>${dato.estd_modalidad__modalidad}</td>
-                          <td>${dato.est_id__est_total_meta}</td>
+                     
                           <td>${dato.estd_auxiliar_meta}</td>
                           <td>${dato.estd_bilinguismo}</td>
                           <td>${dato.estd_sin_bilinguismo}</td>
@@ -741,7 +739,7 @@
       .then(data =>{
        
           document.getElementById('field1').textContent = data.met_codigo
-          document.getElementById('field2').textContent = data.met_centro_formacion
+        
           document.getElementById('field3').textContent = data.met_fecha_inicio
           document.getElementById('field4').textContent = data.met_fecha_fin
           document.getElementById('field5').textContent = data.met_año

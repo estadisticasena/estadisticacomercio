@@ -1219,8 +1219,8 @@ def get_estrategia_data(request,id_estd_modalidad):
     
 #datos para los filtros de meta_estrategia
 def meta_data(request,id_estd_meta):
-  
-    meta = Estrategia.objects.get(met_id=id_estd_meta)
+    print('met',id_estd_meta)
+    meta = Meta_estrategia_detalle.objects.get(met_id=id_estd_meta)
     
 
     meta_serializer = MetaSerializer(meta)
@@ -1237,7 +1237,7 @@ def meta_detalle(request, estd_meta):
         meta = Meta.objects.get(met_id=estd_meta)
         data = {
             'met_codigo': meta.met_codigo,
-            'met_centro_formacion' :meta.met_centro_formacion.centro_de_formacion,
+        
             'met_fecha_inicio' : meta.met_fecha_inicio,
             'met_fecha_fin': meta.met_fecha_fin,
             'met_año' : meta.met_año,

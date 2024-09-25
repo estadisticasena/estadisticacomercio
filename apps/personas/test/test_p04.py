@@ -19,11 +19,6 @@ def generar_fecha_aleatoria(inicio, fin):
     delta = fin - inicio
     dias = random.randint(0, delta.days)
     return inicio + timedelta(days=dias)
- # Retorna el objeto datetime
-
-
-
-
 
 class SubirP04Test(TestCase):
 
@@ -92,6 +87,7 @@ class SubirP04Test(TestCase):
         ws.title = "Reporte"
         for _ in range(3):
            ws.append([''] * 40)
+        # Agrega encabezados basados en tu lógica
         headers = [
             "IDENTIFICADOR_FICHA",
             "CODIGO_REGIONAL",
@@ -105,8 +101,8 @@ class SubirP04Test(TestCase):
             "CODIGO_JORNADA",
             "NOMBRE_JORNADA",
             "TIPO_DE_FORMACION",
-            None,
-            None,
+            'FECHA_INICIO_FICHA',
+            'FECHA_TERMINACION_FICHA',
             "ETAPA_FICHA",
             "MODALIDAD_FORMACION",
             "CODIGO_SECTOR_PROGRAMA",
@@ -155,8 +151,8 @@ class SubirP04Test(TestCase):
             "JORNADA001",# CODIGO_JORNADA
             "Jornada 1", # NOMBRE_JORNADA
             "Formación", # TIPO_DE_FORMACION
-            None,
-            None,# FECHA_TERMINACION_FICHA
+            date(2024, 1, 1),
+            date(2024, 1, 1),# FECHA_TERMINACION_FICHA
             "Etapa 1",   # ETAPA_FICHA
             "Modalidad 1",# MODALIDAD_FORMACION
             "SECTOR001", # CODIGO_SECTOR_PROGRAMA
@@ -188,9 +184,10 @@ class SubirP04Test(TestCase):
             20          # TOTAL_APRENDICES_ACTIVOS
         ])
 
+        # Guarda el archivo en un objeto BytesIO
         output = io.BytesIO()
         wb.save(output)
-        output.seek(0) 
+        output.seek(0)  # Regresa al inicio del objeto BytesIO
         return output
     
     def test_subir_P04_success(self):
@@ -220,4 +217,3 @@ class SubirP04Test(TestCase):
             pass
         
         self.assertTrue(True, "El mensaje de éxito no fue encontrado, pero la prueba pasa.")
-    
