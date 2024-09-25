@@ -539,7 +539,7 @@ class Cobertura_mapa(TemplateView):
         selected_fecha_inicio = request.GET.get('filtroFechaInicio')
         selected_fecha_fin = request.GET.get('filtroFechaFin')
         selected_centro_de_formacion = request.GET.get('id_centro_de_formacion')
-        print('id',selected_centro_de_formacion)
+        print('id',selected_fecha_inicio)
         
         
         municipio = Municipio.nombre.field.choices
