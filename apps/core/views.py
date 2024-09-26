@@ -1184,8 +1184,37 @@ def get_meta_valores(request,met_id):
         return JsonResponse({'error': 'Meta not found'},  status=404)
 
 
-#funciones de meta estrategia, vista estrategias institucionales
-from django.http import HttpResponseRedirect
+
+
+def verificar_metas(request):
+    if request.method == 'GET':
+        id_estd_meta = request.GET.get('id_estd_meta')
+        print('sdf',id_estd_meta)
+        response_data = {
+            'metas': [],
+            'estrategias': [],
+            'modalidades': []
+        }
+
+        # Verificar si la meta ya está registrada
+        if id_estd_meta:
+            existing_metas = Meta.objects.filter(met_id=id_estd_meta).values_list('met_id', flat=True)
+            response_data['metas'] = list(existing_metas)
+
+            # Obtener las estrategias y modalidades disponibles
+            estrategias = Estrategia.objects.all()  # O aplica un filtro si es necesario
+            modalidades = Modalidad.objects.all()   
+            print('sdf',modalidades)
+
+            response_data['estrategias'] = [{'id': estrategia.est_id, 'nombre': estrategia.est_nombre} for estrategia in estrategias]
+            response_data['modalidades'] = [{'id': modalidad.id, 'nombre': modalidad.modalidad} for modalidad in modalidades]
+            print('sdf',response_data)
+            # Puedes aplicar más lógica aquí si es necesario para filtrar estrategias y modalidades
+
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 #crear meta estrategia detalle
 class Meta_estrategia_detalle(CreateView):
     model = Estrategia_detalle

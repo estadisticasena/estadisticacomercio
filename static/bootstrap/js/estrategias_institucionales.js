@@ -42,102 +42,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-// suma de los datos para total meta
-document.addEventListener('DOMContentLoaded', function() {
-        const metaSelects = document.querySelectorAll('select[name="met_id"]');
-        const totalMetaFields = document.querySelectorAll('input[name="est_total_meta"]');
-    
-        metaSelects.forEach((metaSelect, index) => {
-            const totalMetaField = totalMetaFields[index]; // Campo total correspondiente
-    
-            metaSelect.addEventListener('change', function() {
-                const selectedMetaId = metaSelect.value;
-                fetchMetaValues(selectedMetaId, totalMetaField);
-            });
-        });
-        function fetchMetaValues(metaId, totalMetaField) {
-            fetch(`/estrategias/est_total_meta/${metaId}/`)
-                .then(response => response.json())
-                .then(data => {
-                    let total = 0;
-                   
-                    if (data) {
-                        let met_total_otras_poblaciones = parseFloat(data.met_total_otras_poblaciones) || 0;
-                        let met_total_victimas = parseFloat(data.met_total_victimas) || 0;
-                        let met_total_hechos_victimizantes = parseFloat(data.met_total_hechos_victimizantes) || 0;
-                        let met_total_desplazados_violencia = parseFloat(data.met_total_desplazados_violencia) || 0;
-                        let met_total_titulada = parseFloat(data.met_total_titulada) || 0;
-                        let met_total_complementaria = parseFloat(data.met_total_complementaria) || 0;
-                        let met_total_poblacion_vulnerable = parseFloat(data.met_total_poblacion_vulnerable) || 0;
-                        total = met_total_otras_poblaciones + met_total_victimas + met_total_hechos_victimizantes+met_total_desplazados_violencia + met_total_titulada+met_total_complementaria+met_total_poblacion_vulnerable;
-                    }
-                    totalMetaField.value = total;
-                })
-                .catch(error => console.error('Error fetching meta values:', error));
-        }
-    });
 
 
 
 
 
-  //alaertas para el formulario de meta create
-document.getElementById('id_met_año').addEventListener('input',function(){
-    const id_met_año = this.value
 
 
-    fetch('/verificar-año/',{
-        method: 'POST',
-        headers:{
-            'Content-Type': 'application/json',
-            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ id_met_año: id_met_año })
-    })
-    .then(response => response.json())
-    .then(data => {
-        const errorAño = document.getElementById('errorDocumentoExists');
-        const botonBloqueado = document.getElementById('submit-second-modal_meta');
-        
-        if(data.existe){
-            errorAño.style.display = 'block';
-            botonBloqueado.disabled = true;
-        }else{
-            errorAño.style.display = 'none';
-            botonBloqueado.disabled = false;
-        }
-    });
-});
-
-//verificacion de formulario metas formacion 
-
-$(document).ready(function() {
-    $('#id_met_id').change(function() {
-        
-        var id_met_id = $(this).val();
-        console.log('hola',id_met_id)
-        if (id_met_id) {
-            $.ajax({
-                url: url_meta_formacion,
-                method: 'GET',
-                data: { id_met_id: id_met_id },
-                success: function(data) {
-                    var select = $('#id_metd_modalidad');
-                    select.empty();
-                    select.append('<option value="">Selecciona modalidad</option>');
-                    $.each(data, function(index, modalidad) {
-                        select.append('<option value="' + modalidad.id + '">' + modalidad.modalidad + '</option>');
-                    });
-                },
-                error: function() {
-                    alert('Error al cargar las modalidades.');
-                }
-            });
-        } else {
-            $('#id_metd_modalidad').empty().append('<option value="">Selecciona modalidad</option>');
-        }
-    });
-});
 
 //fechas inicio y fin 
 document.getElementById('id_met_fecha_inicio').addEventListener('change', validateDates);
@@ -161,6 +72,59 @@ function validateDates() {
     }
 }
 
+//validaciones para meta estrategia
+$(document).ready(function() {
+    $(document).on('change', '#id_estd_meta', function() {
+        var id_estd_meta = $(this).val();
+        var $modal = $(this).closest('.modal');
+        var submitButton = $modal.find('#submit-second-modal_meta_formacion');
+
+        if (id_estd_meta) {
+            $.ajax({
+                url: url_meta_verificacion, // URL que devuelve las metas
+                method: 'GET',
+                data: { id_estd_meta: id_estd_meta },
+                success: function(data) {
+                    // Limpiar y actualizar selects
+                    var selectEstrategia = $modal.find('#id_est_id');
+                    var selectModalidad = $modal.find('#id_estd_modalidad');
+                    selectEstrategia.empty();
+                    selectModalidad.empty();
+
+                    if (data.error) {
+                        // Manejar el error en la respuesta
+                        alert(data.error);
+                        submitButton.prop('disabled', true);
+                    } else {
+                        // Llenar el select de estrategias
+                        $.each(data.estrategias, function(index, estrategia) {
+                            selectEstrategia.append('<option value="' + estrategia.id + '">' + estrategia.nombre + '</option>');
+                        });
+
+                        // Llenar el select de modalidades
+                        $.each(data.modalidades, function(index, modalidad) {
+                            selectModalidad.append('<option value="' + modalidad.id + '">' + modalidad.nombre + '</option>');
+                        });
+
+                        // Habilitar el botón si hay estrategias y modalidades disponibles
+                        if (data.estrategias.length > 0 && data.modalidades.length > 0) {
+                            submitButton.prop('disabled', false);
+                        } else {
+                            submitButton.prop('disabled', true);
+                        }
+                    }
+                },
+                error: function() {
+                    alert('Error al cargar los datos.');
+                }
+            });
+        } else {
+            // Limpiar selects si no hay selección
+            $('#id_est_id').empty().append('<option value="">Selecciona estrategia</option>');
+            $('#id_estd_modalidad').empty().append('<option value="">Selecciona modalidad</option>');
+        }
+    });
+});
 
 
 function Delete_estrategia(button) {

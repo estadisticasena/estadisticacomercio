@@ -419,15 +419,16 @@
                     <div class="modal-body">
                         <form id="second-modal-form_meta" action="{% url 'cores:meta_estrategia_detalle' %}" method="post">
                             {% csrf_token %}
-                            
+                            <div class="mb-3">
+                                <label for="" class="form-label">Meta</label>
+                                {{ form_meta_estrategia_detalle.estd_meta }}
+                                <div id="verification-message" class="text-danger"></div> 
+                            </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Modalidad</label>
                                 {{ form_meta_estrategia_detalle.estd_modalidad }}
                             </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label">Meta</label>
-                                {{ form_meta_estrategia_detalle.estd_meta }}
-                            </div>
+                            
                             <div class="mb-3">
                                 <label for="" class="form-label">Estrategia</label>
                                 {{ form_meta_estrategia_detalle.est_id }}
@@ -553,7 +554,7 @@
 </div>
 
 <script>
-
+    url_meta_verificacion = '{% url "cores:verificar_metas" %}'
     //filtros
     document.addEventListener('DOMContentLoaded', function() {
       let modalidadesDisponibles = [];
