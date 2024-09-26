@@ -2,6 +2,10 @@
 CREDENCIALES SUPERUSUSERIO
 #superusuario = nombre admin, correo estadisticasenacomercio@gmail.com, documento=123456789 contraseña=sena12345
 
+
+CORREO PARA EL PROYECTO 
+estadisticasenacomercio@gmail.com
+Contraseña=estadistica
 INICIAR PROYECTO:
 terminal:
 1) Activar entorno virtual

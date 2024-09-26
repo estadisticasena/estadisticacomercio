@@ -620,9 +620,10 @@ class Programa(TemplateView):
     
     def get(self, request, *args, **kwargs):
         selected_centro_de_formacion = request.GET.get('centro_de_formacion','')
+        
         selected_nivel_formacion = request.GET.get('nivel_formacion','')
         selected_programa_formacion = request.GET.get('programa_formacion','')
-        print('pppp',selected_nivel_formacion)
+        print('pppp',selected_programa_formacion)
         selected_modalidad = request.GET.get('modalidad','')
         
         
