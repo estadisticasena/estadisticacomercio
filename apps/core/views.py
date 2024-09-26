@@ -1087,7 +1087,7 @@ class Meta_formacion_edit(UpdateView):
               'metd_modalidad',
               'met_formacion_operario',
               'met_formacion_auxiliar',
-              'met_centro_formacion__centro_de_formacion'
+              'met_centro_formacion',
               'met_formacion_tecnico',
               'met_formacion_profundizacion_tecnica',
               'met_formacion_tecnologo',

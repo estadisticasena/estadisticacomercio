@@ -135,10 +135,7 @@
                             <form id="editarFormMetaFormacion" method="post">
                                 <div class="form-group">
                                     {% csrf_token %}
-                                    <div class="mb-3">
-                                        <label for="" class="form-label">Centro de formacion</label>
-                                        {{ form_meta_formacion.met_centro_formacion }}
-                                    </div>
+                                    
                                 
                                     <div class="mb-3">
                                         <label for="" class="form-label">Meta formacion operario</label>
@@ -182,6 +179,11 @@
                                         {{ form_meta_formacion.met_id }}
                                     </div>
                                     <div class="mb-3">
+                                        <label for="" class="form-label">Centro de formacion</label>
+                                        {{ form_meta_formacion.met_centro_formacion }}
+                                        <div id="centro-message" class="text-danger"></div>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="" class="form-label">Modalidad</label>
                                         {{ form_meta_formacion.metd_modalidad}}
                                     </div>
@@ -191,7 +193,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            <button type="submit" class="btn btn-primary" id="submit-second-modal_meta_formacion">Guardar cambios</button>
                         </div>
                     </form>
                     </div>
