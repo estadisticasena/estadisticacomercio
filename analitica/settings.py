@@ -26,10 +26,13 @@ SECRET_KEY = 'django-insecure-9+%g4dk0x&@^d(gac*gf2p5o-oxbz87as5b$ru&k&wdg@x5f&l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['estadisticacomercio-production.up.railway.app']
-#ALLOWED_HOSTS = []
 
 
+ALLOWED_HOSTS = ['estadisticacomercio-production.up.railway.app'] #Para despliegue en raiwail debe estar descomentada
+#ALLOWED_HOSTS = []  #Para ejecucion local debe estar descomentada
+
+
+#base de datos railway
 import pymysql
 pymysql.install_as_MySQLdb()
 
@@ -87,8 +90,10 @@ WSGI_APPLICATION = 'analitica.wsgi.application'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
-# Database
+
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+#base de datos mysql workbench
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.mysql',
@@ -101,16 +106,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 #}
 
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': os.environ.get('DB_NAME'),
-#        'USER': os.environ.get('DB_USER'),
-#        'PASSWORD': os.environ.get('DB_PASSWORD'),
-#        'HOST': os.environ.get('DB_HOST'),
-#        'PORT': os.environ.get('DB_PORT'),
-#    }
-#}
+#base de datos sqlite3
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
