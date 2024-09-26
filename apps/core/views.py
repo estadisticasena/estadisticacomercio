@@ -1029,19 +1029,51 @@ class Meta_formacion_create(CreateView):
     template_name = 'Formacion_regular/formacion_regular.html'
     success_url = reverse_lazy('cores:formacion_regular_index') 
 
+
+
+
+
 def Verificacion_meta_formacion_regular(request):
     meta_id = request.GET.get('id_met_id')
-    
-   
-    
-    modalidades_registrada = Metas_formacion.objects.filter(met_id=meta_id).values('metd_modalidad')
-   
-    modalidades = Modalidad.objects.filter()
-    modalidad_habilitada = Modalidad.objects.exclude(id__in=modalidades_registrada)
-   
-    opciones_disponibles = [{'id': modalidad.id, 'modalidad':modalidad.modalidad} for modalidad in modalidad_habilitada]
-    
-    return JsonResponse(opciones_disponibles, safe=False)
+
+    if not meta_id:
+        return JsonResponse({'error': 'ID de meta no proporcionado'}, status=400)
+
+    # Obtener todas las modalidades posibles
+    todas_modalidades = Modalidad.objects.all()
+
+    # Verificar cuántas modalidades ya se han registrado para este año en cada centro
+    modalidades_registradas = Metas_formacion.objects.filter(met_id=meta_id).values('metd_modalidad', 'met_centro_formacion')
+
+    # Diccionario para agrupar modalidades registradas por centro
+    centros_modalidades = {}
+    for registro in modalidades_registradas:
+        centro_id = registro['met_centro_formacion']
+        modalidad_id = registro['metd_modalidad']
+        if centro_id not in centros_modalidades:
+            centros_modalidades[centro_id] = set()
+        centros_modalidades[centro_id].add(modalidad_id)
+
+    # Obtener todos los centros
+    centros_formacion = Centro_de_formacion.objects.all()
+
+    # Crear una lista de centros y modalidades restantes por centro
+    centros_disponibles = []
+    for centro in centros_formacion:
+        modalidades_centro = centros_modalidades.get(centro.id, set())  # Modalidades ya registradas para ese centro
+        modalidades_faltantes = todas_modalidades.exclude(id__in=modalidades_centro)
+
+        if modalidades_faltantes.exists():
+            centros_disponibles.append({
+                'id': centro.id,
+                'nombre': centro.centro_de_formacion,
+                'modalidades_faltantes': [{'id': modalidad.id, 'modalidad': modalidad.modalidad} for modalidad in modalidades_faltantes]
+            })
+
+    return JsonResponse({
+        'centros_disponibles': centros_disponibles
+    })
+
 
 class Meta_formacion_delete(DeleteView):
     model = Metas_formacion
@@ -1296,6 +1328,7 @@ class metas_formacion_filtros(TemplateView):
             'metd_modalidad',
             'met_centro_formacion__centro_de_formacion',
             'met_formacion_operario',
+            'met_centro_formacion',
             'met_formacion_auxiliar',
             'met_formacion_tecnico',
             'met_formacion_profundizacion_tecnica',

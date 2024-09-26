@@ -10,47 +10,87 @@
 
 //verificacion de formulario metas formacion 
 $(document).ready(function() {
-    $(document).on('change','#id_met_id',function() {
-        var id_met_id = $(this).val();
+    $(document).on('change', '#id_met_id', function() {
+        var id_met_id = $(this).val();  // Año seleccionado
         var $modal = $(this).closest('.modal');
         var submitButton = $modal.find('#submit-second-modal_meta_formacion');
 
-
         if (id_met_id) {
             $.ajax({
-                url: url_meta_formacion,
+                url: url_meta_formacion, // URL que devuelve modalidades y centros
                 method: 'GET',
                 data: { id_met_id: id_met_id },
                 success: function(data) {
-                    var select = $modal.find('#id_metd_modalidad');
-                    var messageDiv = $modal.find('#modalidad-message');
+                    // Limpiar y actualizar el select de centros de formación
+                    var selectCentro = $modal.find('#id_met_centro_formacion');
+                    var messageCentro = $modal.find('#centro-message');
+                    selectCentro.empty();
+                    selectCentro.append('<option value="">Selecciona centro de formación</option>');
+                    messageCentro.empty();
 
-                    select.empty();
-                    select.append('<option value="">Selecciona modalidad</option>');
-                    messageDiv.empty(); // Limpiar el mensaje anterior
-                    
-                    if (data.length === 0) {
-                        // Si no hay modalidades, mostrar un mensaje
-                        messageDiv.text('No hay modalidades habilitadas para este año.');
-                        submitButton.prop('disabled', true); 
+                    if (data.centros_disponibles.length === 0) {
+                        // Si no hay centros disponibles para este año, mostrar el mensaje
+                        messageCentro.text('No hay más centros disponibles para este año. No se pueden registrar más metas.');
+                        submitButton.prop('disabled', true);  // Deshabilitar el botón
                     } else {
-                        $.each(data, function(index, modalidad) {
-                            select.append('<option value="' + modalidad.id + '">' + modalidad.modalidad + '</option>');
+                        // Si hay centros disponibles, habilitar el select y el botón
+                        $.each(data.centros_disponibles, function(index, centro) {
+                            selectCentro.append('<option value="' + centro.id + '">' + centro.nombre + '</option>');
                         });
-                        messageDiv.hide(); // Ocultar el mensaje
+                        messageCentro.hide();  // Ocultar el mensaje si hay centros
                         submitButton.prop('disabled', false);
+
+                        // Cuando se seleccione un centro, actualizar las modalidades
+                        selectCentro.on('change', function() {
+                            var centro_id = $(this).val(); // Centro seleccionado
+
+                            if (centro_id) {
+                                // Buscar el centro seleccionado en los datos recibidos
+                                var centroSeleccionado = data.centros_disponibles.find(c => c.id == centro_id);
+
+                                if (centroSeleccionado) {
+                                    // Limpiar y actualizar el select de modalidades
+                                    var selectModalidad = $modal.find('#id_metd_modalidad');
+                                    var messageModalidad = $modal.find('#modalidad-message');
+                                    selectModalidad.empty();
+                                    selectModalidad.append('<option value="">Selecciona modalidad</option>');
+                                    messageModalidad.empty();
+
+                                    if (centroSeleccionado.modalidades_faltantes.length === 0) {
+                                        messageModalidad.text('Este centro ya tiene todas las modalidades registradas.');
+                                        submitButton.prop('disabled', true); // Deshabilitar el botón si no hay modalidades faltantes
+                                    } else {
+                                        $.each(centroSeleccionado.modalidades_faltantes, function(index, modalidad) {
+                                            selectModalidad.append('<option value="' + modalidad.id + '">' + modalidad.modalidad + '</option>');
+                                        });
+                                        messageModalidad.hide();
+                                        submitButton.prop('disabled', false);
+                                    }
+                                }
+                            } else {
+                                // Limpiar si no se ha seleccionado un centro
+                                $('#id_metd_modalidad').empty().append('<option value="">Selecciona modalidad</option>');
+                                $('#modalidad-message').empty();
+                            }
+                        });
                     }
                 },
                 error: function() {
-                    alert('Error al cargar las modalidades.');
+                    alert('Error al cargar los datos.');
                 }
             });
         } else {
+            // Limpiar selects y mensajes si no hay selección
             $('#id_metd_modalidad').empty().append('<option value="">Selecciona modalidad</option>');
-            $('#modalidad-message').empty(); // Limpiar el mensaje si no hay selección
+            $('#id_centro_formacion').empty().append('<option value="">Selecciona centro de formación</option>');
+            $('#modalidad-message').empty();
+            $('#centro-message').empty();
         }
     });
 });
+
+
+
 
 
 
@@ -78,7 +118,8 @@ function Delete_meta_formacion(button) {
     const id_met_formacion_sin_bilinguismo = button.getAttribute('data-sin-bilinguismo')
     const id_met_id = button.getAttribute('data-meta')
     const id_metd_modalidad = button.getAttribute('data-modalidad')
-    
+    const id_met_centro_formacion = button.getAttribute('data-centro-formacion')
+
 
     
     document.getElementById('editarFormMetaFormacion').action = `/meta_formacion/edit/${pk}`;
@@ -93,8 +134,6 @@ function Delete_meta_formacion(button) {
     document.getElementById('id_met_formacion_sin_bilinguismo').value = id_met_formacion_sin_bilinguismo
     document.getElementById('id_met_id').value = id_met_id
     document.getElementById('id_metd_modalidad').value = id_metd_modalidad
-    
-    
-
+    document.getElementById('id_met_centro_formacion').value = id_met_centro_formacion
     
   }

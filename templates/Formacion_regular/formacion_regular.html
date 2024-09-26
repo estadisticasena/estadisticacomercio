@@ -135,6 +135,10 @@
                             <form id="editarFormMetaFormacion" method="post">
                                 <div class="form-group">
                                     {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Centro de formacion</label>
+                                        {{ form_meta_formacion.met_centro_formacion }}
+                                    </div>
                                 
                                     <div class="mb-3">
                                         <label for="" class="form-label">Meta formacion operario</label>
@@ -209,10 +213,7 @@
                                 
 
                                 
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Centro de formacion</label>
-                                    {{ form_meta_formacion.met_centro_formacion }}
-                                </div>
+                                
                                 <div class="mb-3">
                                     <label for="" class="form-label">Meta formacion operario</label>
                                     {{ form_meta_formacion.met_formacion_operario }}
@@ -256,10 +257,16 @@
                                     <span class="error-message" id="dateError" style="display: none;  bottom: -45px;">La fecha final debe ser mayor que la fecha inicial</span>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="" class="form-label">Centro de formacion</label>
+                                    {{ form_meta_formacion.met_centro_formacion }}
+                                    <div id="centro-message" class="text-danger"></div>
+                                </div>
+                                <div class="mb-3">
                                     <label for="" class="form-label">Modalidad</label>
                                     {{ form_meta_formacion.metd_modalidad}}
-                                    <div id="modalidad-message" style="color: red; margin-top: 5px;"></div>                               
+                                    <div id="modalidad-message" class="text-danger"></div>                            
                                  </div>
+                                 
 
 
                               
@@ -269,7 +276,7 @@
                             </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="submit" class="btn btn-primary" id="submit-second-modal_meta_formacion">Guardar</button>
                                 </div>
                                 
                             </form>
@@ -398,7 +405,7 @@
                                     <td>
 
                                         
-                                        <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModalMetaFormacion" data-operario="${dato.met_formacion_operario}"data-auxiliar="${dato.met_formacion_auxiliar}" data-tecnico="${dato.met_formacion_tecnico}" data-profundizacion="${dato.met_formacion_profundizacion_tecnica}" data-tecnologo="${dato.met_formacion_tecnologo}"   data-evento="${dato.met_formacion_evento}" data-curso-especial="${dato.met_formacion_curso_especial}" data-bilinguismo="${dato.met_formacion_bilinguismo}" data-sin-bilinguismo="${dato.met_formacion_sin_bilinguismo}"  data-meta="${dato.met_id}" data-id="${dato.metd_id}" data-modalidad="${dato.metd_modalidad}"  onclick="Editar_meta_formacion(this)">Editar</button>
+                                        <button type="button" class="btn btn-warning btn-sm mr-2" data-toggle="modal" data-target="#editarModalMetaFormacion" data-operario="${dato.met_formacion_operario}"data-auxiliar="${dato.met_formacion_auxiliar}" data-tecnico="${dato.met_formacion_tecnico}" data-profundizacion="${dato.met_formacion_profundizacion_tecnica}" data-tecnologo="${dato.met_formacion_tecnologo}"   data-evento="${dato.met_formacion_evento}" data-curso-especial="${dato.met_formacion_curso_especial}" data-bilinguismo="${dato.met_formacion_bilinguismo}" data-sin-bilinguismo="${dato.met_formacion_sin_bilinguismo}"  data-meta="${dato.met_id}" data-id="${dato.metd_id}" data-centro-formacion="${dato.met_centro_formacion}"  data-modalidad="${dato.metd_modalidad}"  onclick="Editar_meta_formacion(this)">Editar</button>
                                         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal"  onclick="Delete_meta_formacion(${dato.metd_id})">Eliminar</button>
                                     </td>
                                     {% endif %}
