@@ -46,3 +46,7 @@ Habilitar el permiso para las diferentes funciones y templates
          <span>Roles</span>           
    {% endif %}
 
+El proyecto tiene configurados dos repositorios 
+verificar = git remote -v 
+para el reposiitorio de tecnoparque es necesario hacer push de esta manera:
+git push new-origin main
