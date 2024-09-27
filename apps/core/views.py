@@ -623,7 +623,7 @@ class Programa(TemplateView):
         
         selected_nivel_formacion = request.GET.get('nivel_formacion','')
         selected_programa_formacion = request.GET.get('programa_formacion','')
-        print('pppp',selected_programa_formacion)
+        print('pppp',type(selected_nivel_formacion))
         selected_modalidad = request.GET.get('modalidad','')
         
         
