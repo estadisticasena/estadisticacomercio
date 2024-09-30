@@ -330,11 +330,10 @@ def general(request):
     data_values_presencial = list(niveles_habilitados.values())
     data_values_virtual = list(niveles_habilitados_virtual.values())
     data =data_values_presencial + data_values_virtual
-    
+ 
     
     #NOTA VERIFICA QUE PRESENCIAL=1,VIRTUAL=2,DISTANCIA=3
-    print("Fecha Inicio:", type(select_fecha_fin_ff))
-    print("Fecha Fin:", select_fecha_fin_ff)
+
 
     modalidad_presencial_metas = 1
     modalidad_virtual_metas = 2
@@ -343,7 +342,7 @@ def general(request):
         met_fecha_fin__gte=select_fecha_inicio_ff,
 
     ).values_list('met_id', flat=True)
-    print("IDs de Metas para el rango de fechas:", list(metas_ids))
+
     
     
   
@@ -354,7 +353,7 @@ def general(request):
     
     metas_presencial_porcentaje_res = list(metas_presencial_porcentaje.values_list('met_formacion_curso_especial','met_formacion_tecnologo','met_formacion_tecnico','met_formacion_auxiliar','met_formacion_operario','met_formacion_evento'))
     metas_virtual_porcentaje_res = list(metas_virtual_porcentaje.values_list('met_formacion_curso_especial','met_formacion_tecnologo','met_formacion_tecnico','met_formacion_auxiliar','met_formacion_operario','met_formacion_evento'))
-    print('kk',metas_presencial_porcentaje_res)
+    
     def sumar_tuplas(metas):
         if len(metas) == 1:
             return [metas[0]]  # Devuelve una lista con la tupla si hay solo una
@@ -1143,7 +1142,7 @@ class estrategia_institucional_delete(DeleteView):
 class estrategia_institucional_edit(UpdateView):
     model = Estrategia
     from_class = Form_meta_estrategia_detalle
-    fields = ['est_nombre','met_id','est_total_meta']
+    fields = ['est_nombre']
     success_url = reverse_lazy('cores:estrategias_institucionales_index')
     
 #meta estrategias intitucionales

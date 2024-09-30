@@ -44,7 +44,7 @@ urlpatterns = [
     path('verificacion_meta_formacion_regular/', core_views.Verificacion_meta_formacion_regular, name="verificacion_meta_formacion_regular"),
     
     #eliminar y editar meta formacion (formacion regular)
-    path('meta_formacion/delete/<int:pk>', core_views.Meta_formacion_delete.as_view(), name="verificacion_meta_formacion_regular"),
+    path('meta_formacion/delete/<int:pk>', core_views.Meta_formacion_delete.as_view(), name="meta_formacion_regular_delete"),
     path('meta_formacion/edit/<int:pk>', core_views.Meta_formacion_edit.as_view(), name="meta_formacion_regular_edit"),
     #eliminar y editar estrategias institucionales (estrategia)
     path('estrategia_institucional/delete/<int:pk>', core_views.estrategia_institucional_delete.as_view(), name='estrategia_institucional_delete'),

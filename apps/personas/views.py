@@ -329,7 +329,7 @@ def Poblacion_vulnerable_graficas(request):
     conversiones_de_porcentajes_aprendices = porcentajes(poblacion_aprendices)
     
     
-    
+   
     #datos de grfica para los valores en ejecucion (array)
     def valores_grafica(valores):
         resultado = []

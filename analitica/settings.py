@@ -28,13 +28,13 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['estadisticacomercio-production.up.railway.app'] #Para despliegue en raiwail debe estar descomentada
-#ALLOWED_HOSTS = []  #Para ejecucion local debe estar descomentada
+#ALLOWED_HOSTS = ['estadisticacomercio-production.up.railway.app'] #Para despliegue en raiwail debe estar descomentada
+ALLOWED_HOSTS = []  #Para ejecucion local debe estar descomentada
 
 
 #base de datos railway
-import pymysql
-pymysql.install_as_MySQLdb()
+#import pymysql
+#pymysql.install_as_MySQLdb()
 
 
 # Application definition
