@@ -1,5 +1,12 @@
 credentials.json
-
+# entorno 
+.venv
+analitica/__pycache__
+apps/core/__pycache__
+apps/core/migrations/__pycache__
+apps/personas/__pycache__
+apps/personas/migrations/__pycache__
+apps/personas/test/__pycache__
 
 #Instalaciones
 #pip install djangorestframework

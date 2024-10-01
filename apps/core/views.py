@@ -59,10 +59,7 @@ def estrategias(request):
     select_centro_de_formacion = request.GET.get('id_centro_de_formacion','')
     
     datos_p04= P04.objects.all()
-    
-    
-   
-    
+     
     if select_fecha_inicio and select_fecha_fin:
         datos_p04 = datos_p04.filter(fecha_inicio_ficha__gte=select_fecha_inicio, fecha_inicio_ficha__lte=select_fecha_fin)
    
