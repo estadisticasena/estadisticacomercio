@@ -23,6 +23,7 @@ from apps.personas import views as persona_views
 from apps.personas.views import CustomPasswordResetView, CustomPasswordResetDoneView
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("__reload__/", include("django_browser_reload.urls")),
     path('',include('apps.personas.urls')),
     path('',include('apps.core.urls')),
     path('grafica', views.grafica, name="grafica"),

@@ -21,6 +21,9 @@ from django.contrib import messages
 import json
 from django.core.paginator import Paginator
 #redirecciones a las vistas
+def new_layout(request):
+    return render(request,'layout/base.html')
+
 def menu(request):
     return render(request,'home.html')
 
